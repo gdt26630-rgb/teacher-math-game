@@ -146,6 +146,14 @@ body.scholar-reading .wrap{position:relative;z-index:1}
 #duelAnswerForm{display:flex;gap:10px;max-width:560px;margin:auto}#duelAnswer{flex:1;min-width:0}
 #duelProgress{height:100%;width:0;background:linear-gradient(90deg,#55d6e8,#ffd166)}
 @media(max-width:600px){.avatar-preview-card{flex-direction:column;text-align:center}.collectible-card{width:calc(50% - 8px)}#duelAnswerForm{flex-direction:column}.duel-scoreboard{gap:6px}}
+
+.leaderboard-list{display:grid;gap:10px;margin-top:14px}
+.leaderboard-row{display:flex;align-items:center;gap:12px;padding:13px 15px;border:1px solid #536b9b;border-radius:15px;background:linear-gradient(120deg,#263d70,#17294e)}
+.leaderboard-rank{font-size:20px;font-weight:900;min-width:38px;text-align:center}
+.leaderboard-player{flex:1;min-width:0}
+.leaderboard-points{font-weight:900;color:#ffe08a;white-space:nowrap}
+.leaderboard-row.me{border-color:#f7d477;background:linear-gradient(120deg,#59451c,#263d70)}
+.leaderboard-demo{font-size:11px;color:#c5d2ed}
 </style>
 
 <script>
@@ -188,7 +196,7 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
 <div class="wrap">
 <header class="top">
   <div class="brand">Teacher Math <small>آقای ریاضی | یاد بگیر، فکر کن، برنده شو!</small></div>
-  <div class="row" style="flex:0 1 auto"><span class="pill" id="coinPill" onclick="showCoins()" title="رفتن به باشگاه سکه‌ها" style="cursor:pointer">🪙 0</span><span class="pill" id="playerPill" onclick="openPlayerProfile()" role="button" tabindex="0" style="cursor:pointer" title="نمایش پروفایل و افتخارات">بازیکن: مهمان</span><button class="pill" onclick="openAccount()" style="cursor:pointer">👤 حساب کاربری</button><button class="pill" onclick="showAvatars()" style="cursor:pointer">🎭 آواتارها</button></div>
+  <div class="row" style="flex:0 1 auto"><span class="pill" id="coinPill" onclick="showCoins()" title="رفتن به باشگاه سکه‌ها" style="cursor:pointer">🪙 0</span><span class="pill" id="playerPill" onclick="openPlayerProfile()" role="button" tabindex="0" style="cursor:pointer" title="نمایش پروفایل و افتخارات">بازیکن: مهمان</span><button class="pill" id="accountOpenButton" type="button" style="cursor:pointer">👤 حساب کاربری</button><button class="pill" onclick="showAvatars()" style="cursor:pointer">🎭 آواتارها</button></div>
 </header>
 
 <section id="welcome" class="panel">
@@ -202,6 +210,7 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
  <div class="grid">
   <button class="tile" onclick="showQuiz()"><span>🧠</span><b>آزمون ریاضی</b></button>
   <button class="tile" onclick="showSuccessChart()"><span>📊</span><b>نمودار موفقیت</b></button>
+  <button class="tile" onclick="showLeaderboard()"><span>🏅</span><b>جدول رتبه‌بندی</b><small>۱۰ شرکت‌کننده نمونه + رکورد تو</small></button>
   <button class="tile" onclick="showStudy()"><span>📚</span><b>دانشنامه دانشمندان</b></button>
   <button class="tile" onclick="showDuel()"><span>⚔️</span><b>دوئل ریاضی دو نفره</b><small>رقابت با هوش مصنوعی</small></button>
   <button class="tile" onclick="showChallenges()"><span>🎯</span><b>چالش‌ها</b></button>
@@ -216,6 +225,13 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
   <button class="tile" onclick="showEffects()"><span>✨</span><b>افکت‌های ویژه</b><small>درخشش و جشن موفقیت</small></button><button id="secretRoomHomeTile" class="tile hidden" onclick="showSecretRoom()"><span>🚪</span><b>اتاق مخفی</b><small>جایزه ویژه افتخارات برنزی</small></button>
  </div>
  <p class="muted">هر پاسخ درست سکه دارد: آسان ۵، متوسط ۱۰، سخت ۲۰.</p>
+</section>
+
+<section id="leaderboard" class="panel hidden">
+ <div class="row"><h2>🏅 جدول رتبه‌بندی</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
+ <p class="muted">۱۰ شرکت‌کننده‌ی نمایشی برای نمونه؛ رکورد تو از اطلاعات همین بازی خوانده می‌شود. این اسامی فعلاً بازیکنان واقعی آنلاین نیستند.</p>
+ <div class="card" style="margin:12px 0"><b>⭐ امتیاز تو:</b> <span id="myLeaderboardScore">۰</span></div>
+ <div id="leaderboardList" class="leaderboard-list"></div>
 </section>
 
 <section id="rewardShop" class="panel hidden"><div class="row"><h2>🪙 فروشگاه جوایز</h2><button class="secondary" onclick="goHome()">بازگشت</button></div><p class="muted">با سکه‌ها وسایل تزئینی بخر و اتاق شخصی‌ات را زیباتر کن.</p><p class="pill" id="rewardBalance">موجودی: ۰ 🪙</p><div id="rewardShopItems" class="grid"></div></section>
@@ -419,7 +435,7 @@ const scholars=[
 ['محمدباقر یزدی','درگذشته حدود سده ۱۷ میلادی','ریاضی‌دان ایرانی؛ از آثار او در حساب و کسرها یاد شده است.'],
 ['آلبرت اینشتین','۱۸۷۹ تا ۱۹۵۵ میلادی','فیزیک‌دان نظری؛ نظریه نسبیت را ارائه کرد و در تاریخ علم از چهره‌های بسیار اثرگذار است.']
 ];
-const themes=[['classic','کلاسیک آبی','پیش‌فرض',0,'🟦'],['stadium','استادیوم','تم فوتبالی با حال‌وهوای ورزشگاه',200,'🏟️'],['goldcup','جام طلایی','تم ویژه قهرمانی',300,'🏆'],['number10','شماره ۱۰','تم فوتبالی الهام‌گرفته از پیراهن شماره ۱۰',350,'🔟'],['youngstar','ستاره جوان','تم پرانرژی ستاره‌های آینده',250,'⭐'],['worldcup','جام جهانی','تم جشن فوتبال جهانی',450,'🌍'],['cosmic','کهکشان','تم درخشان فضایی با رنگ‌های بنفش و آبی',320,'🌌'],['forest','جنگل زمردی','تم آرام با رنگ‌های سبز و فیروزه‌ای',280,'🌿'],['candy','آبنباتی','تم شاد با رنگ‌های صورتی و یاسی',300,'🍬'],['ocean','اقیانوس','تم آبی و موج‌های درخشان',330,'🌊'],['nebula','سحابی بنفش','پس‌زمینه کمیاب با ابرهای کیهانی',900,'🌌'],['aurora','شفق قطبی','پس‌زمینه کمیاب با نورهای شمالی',950,'🌈'],['sunset','غروب طلایی','پس‌زمینه کمیاب با آسمان غروب',900,'🌅'],['crystalbg','قصر کریستالی','پس‌زمینه کمیاب با درخشش کریستال',1100,'💠']];
+const themes=[['classic','کلاسیک آبی','پیش‌فرض',0,'🟦'],['stadium','استادیوم','تم فوتبالی با حال‌وهوای ورزشگاه',200,'🏟️'],['goldcup','جام طلایی','تم ویژه قهرمانی',200,'🏆'],['number10','شماره ۱۰','تم فوتبالی الهام‌گرفته از پیراهن شماره ۱۰',200,'🔟'],['youngstar','ستاره جوان','تم پرانرژی ستاره‌های آینده',200,'⭐'],['worldcup','جام جهانی','تم جشن فوتبال جهانی',200,'🌍'],['cosmic','کهکشان','تم درخشان فضایی با رنگ‌های بنفش و آبی',200,'🌌'],['forest','جنگل زمردی','تم آرام با رنگ‌های سبز و فیروزه‌ای',200,'🌿'],['candy','آبنباتی','تم شاد با رنگ‌های صورتی و یاسی',200,'🍬'],['ocean','اقیانوس','تم آبی و موج‌های درخشان',200,'🌊'],['nebula','سحابی بنفش','پس‌زمینه کمیاب با ابرهای کیهانی',200,'🌌'],['aurora','شفق قطبی','پس‌زمینه کمیاب با نورهای شمالی',200,'🌈'],['sunset','غروب طلایی','پس‌زمینه کمیاب با آسمان غروب',200,'🌅'],['crystalbg','قصر کریستالی','پس‌زمینه کمیاب با درخشش کریستال',200,'💠']];
 let round=[],index=0,score=0,level='easy',locked=false,writtenMode=false;
 const writtenQuestions=[['عدد ۳۶ را به دو روش متفاوت به عوامل اول تجزیه کن.','۲×۲×۳×۳'],['محیط مستطیلی با طول ۸ و عرض ۵ سانتی‌متر را حساب کن.','۲۶'],['اگر x+7=19 باشد، مقدار x را پیدا کن.','۱۲'],['مجموع زاویه‌های داخلی مثلث چند درجه است؟ توضیح بده.','۱۸۰']];
 function save(){try{localStorage.setItem('mrmath_save_v4',JSON.stringify(data));}catch(e){}if(window.scheduleCloudSave)window.scheduleCloudSave();}
@@ -462,12 +478,41 @@ function recordCompletedGame(total,correct){
  window.redeemRewardCode=function(){
  const input=$('rewardCodeInput'),status=$('rewardCodeStatus');
  const code=input.value.trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
- const usedKey='mrmath_gift_code_12345_used';
- if(code!=='12345'){status.textContent=mrTr('کد جایزه نامعتبر است.');status.className='feedback bad';return;}
+ const rewards={'210':99999,'12345':3000};
+ if(!Object.prototype.hasOwnProperty.call(rewards,code)){status.textContent=mrTr('کد جایزه نامعتبر است.');status.className='feedback bad';return;}
+ const usedKey='mrmath_gift_code_'+code+'_used';
  if(localStorage.getItem(usedKey)==='1'){status.textContent=mrTr('این کد قبلاً استفاده شده است.');status.className='feedback bad';return;}
  try{localStorage.setItem(usedKey,'1');}catch(e){status.textContent=mrTr('کد جایزه نامعتبر است.');status.className='feedback bad';return;}
- data.coins=(Number(data.coins)||0)+3000;update();status.textContent=mrTr('تبریک! ۳۰۰۰ سکه به حسابت اضافه شد.');status.className='feedback good';input.value='';
+ const reward=rewards[code];data.coins=(Number(data.coins)||0)+reward;update();
+ status.textContent='تبریک! '+reward.toLocaleString('fa-IR')+' سکه به حسابت اضافه شد.';
+ status.className='feedback good';input.value='';
 };
+
+window.showLeaderboard=function(){show('leaderboard');renderLeaderboard();};
+function renderLeaderboard(){
+ const sample=[
+  {name:'قهرمان ریاضی',score:9850},{name:'ستاره اعداد',score:9320},
+  {name:'نابغه کوچک',score:8870},{name:'فرمانروای کسرها',score:8410},
+  {name:'استاد ضرب',score:7960},{name:'ذهن درخشان',score:7520},
+  {name:'سلطان معادله',score:7080},{name:'ریاضی‌دان جوان',score:6630},
+  {name:'شکارچی اعداد',score:6190},{name:'قهرمان جمع',score:5740}
+ ];
+ const mine={name:(data.name||'بازیکن مهمان')+' (تو)',score:Math.max(0,(Number(data.totalCorrect)||0)*100+(Number(data.coins)||0)),me:true};
+ const rows=[...sample,mine].sort((a,b)=>b.score-a.score);
+ const list=$('leaderboardList');if(!list)return;
+ $('myLeaderboardScore').textContent=mine.score.toLocaleString('fa-IR');
+ list.innerHTML='';
+ rows.forEach((player,index)=>{
+  const row=document.createElement('div');row.className='leaderboard-row'+(player.me?' me':'');
+  const rank=document.createElement('div');rank.className='leaderboard-rank';rank.textContent=['🥇','🥈','🥉'][index]||('#'+(index+1));
+  const info=document.createElement('div');info.className='leaderboard-player';
+  const name=document.createElement('b');name.textContent=player.name;info.appendChild(name);
+  if(!player.me){const note=document.createElement('div');note.className='leaderboard-demo';note.textContent='شرکت‌کننده نمونه';info.appendChild(note);}
+  const points=document.createElement('div');points.className='leaderboard-points';points.textContent=player.score.toLocaleString('fa-IR')+' امتیاز';
+  row.append(rank,info,points);list.appendChild(row);
+ });
+}
+
 window.showSuccessChart=function(){show('successChart');renderSuccessChart();};
 function renderSuccessChart(){
  const total=(Number(data.totalCorrect)||0)+(Number(data.totalIncorrect)||0);
@@ -1203,10 +1248,10 @@ window.renderScholars=function(){
 window.showShop=function(){show('shop');renderShop();};
 
 const playerItems=[
- {id:'messi',name:'لیونل مسی',tag:'جادوی شماره ۱۰',price:1000,emoji:'⚽',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Lionel_Messi%2C_Player_of_Argentina_national_football_team.JPG/500px-Lionel_Messi%2C_Player_of_Argentina_national_football_team.JPG'},
- {id:'ronaldo',name:'کریستیانو رونالدو',tag:'قدرت و تمرکز',price:900,emoji:'⚡',img:'https://cdn-img.staticzz.com/img/planteis/new/10/15/2561015_cristiano_ronaldo_20240525112233.jpg'},
- {id:'mbappe',name:'کیلیان امباپه',tag:'سرعت ستاره‌ای',price:500,emoji:'🚀',img:'https://www.zerozero.pe/img/planteis/new/98/23/11139823_kylian_mbappe_20240925173008.jpg'},
- {id:'yamal',name:'لامین یامال',tag:'استعداد جوان',price:450,emoji:'🌟',img:'https://www.zerozero.pt/img/planteis/new/79/55/8777955_lamine_yamal_20240611061643.jpg'}
+ {id:'messi',name:'لیونل مسی',tag:'جادوی شماره ۱۰',price:210,emoji:'⚽',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Lionel_Messi%2C_Player_of_Argentina_national_football_team.JPG/500px-Lionel_Messi%2C_Player_of_Argentina_national_football_team.JPG'},
+ {id:'ronaldo',name:'کریستیانو رونالدو',tag:'قدرت و تمرکز',price:200,emoji:'⚡',img:'https://cdn-img.staticzz.com/img/planteis/new/10/15/2561015_cristiano_ronaldo_20240525112233.jpg'},
+ {id:'mbappe',name:'کیلیان امباپه',tag:'سرعت ستاره‌ای',price:200,emoji:'🚀',img:'https://www.zerozero.pe/img/planteis/new/98/23/11139823_kylian_mbappe_20240925173008.jpg'},
+ {id:'yamal',name:'لامین یامال',tag:'استعداد جوان',price:200,emoji:'🌟',img:'https://www.zerozero.pt/img/planteis/new/79/55/8777955_lamine_yamal_20240611061643.jpg'}
 ];
 const cursorItems=[
  {id:'diamondGreen',name:'الماس سبز',price:90,color:'#39e879',svg:'<path d="M16 2 29 13 16 31 3 13Z" fill="#39e879" stroke="#eafff0" stroke-width="2"/><path d="M3 13h26M10 13l6 18 6-18M10 13l6-11 6 11" fill="none" stroke="#087b42" stroke-width="1.5"/>'},
@@ -1360,193 +1405,166 @@ window.teacherMathScholars=scholars;renderScholarCollection();
 </script>
 
 <div id="accountModal" class="hidden" style="position:fixed;inset:0;background:#050816dd;z-index:9999;display:none;align-items:center;justify-content:center;padding:16px">
- <div style="background:#172442;border:1px solid #64748b;border-radius:18px;padding:20px;width:min(420px,100%);color:white;max-height:90vh;overflow:auto">
-  <h2 style="margin-top:0">حساب کاربری Teacher Math</h2>
-  <p id="accountStatus">برای ذخیرهٔ پیشرفت روی حساب خودت وارد شو یا ثبت‌نام کن.</p>
-  <label>نام نمایشی</label><input id="accNick" maxlength="24" placeholder="نام یا لقب" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
-  <label>ایمیل</label><input id="accEmail" type="email" autocomplete="email" placeholder="name@example.com" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
-  <label>رمز عبور</label><input id="accPass" type="password" autocomplete="current-password" placeholder="حداقل ۸ نویسه" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+ <div style="background:#172442;border:1px solid #64748b;border-radius:18px;padding:20px;width:min(440px,100%);color:white;max-height:90vh;overflow:auto">
+  <h2 style="margin-top:0">👤 حساب کاربری Teacher Math</h2>
+  <p id="accountStatus" role="status" aria-live="polite">برای ذخیرهٔ پیشرفت روی حساب خودت وارد شو یا ثبت‌نام کن.</p>
+  <label for="accNick">نام نمایشی</label><input id="accNick" maxlength="24" autocomplete="nickname" placeholder="نام یا لقب" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+  <label for="accEmail">ایمیل</label><input id="accEmail" type="email" autocomplete="email" placeholder="name@example.com" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+  <label for="accPass">رمز عبور</label><input id="accPass" type="password" autocomplete="current-password" placeholder="حداقل ۸ نویسه" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+  <div id="newPasswordWrap" class="hidden"><label for="accNewPass">رمز عبور جدید</label><input id="accNewPass" type="password" autocomplete="new-password" placeholder="رمز جدید، حداقل ۸ نویسه" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px"><button onclick="accountSetNewPassword()" class="gold">ثبت رمز جدید</button></div>
   <label>تصویر پروفایل (اختیاری)</label><input id="accAvatar" type="file" accept="image/png,image/jpeg,image/webp" style="width:100%;margin:8px 0 14px">
   <div style="display:flex;gap:8px;flex-wrap:wrap">
-   <button onclick="accountAction('register')">ثبت‌نام</button><button onclick="accountAction('login')">ورود</button><button onclick="uploadMyAvatar()">بارگذاری تصویر</button>
+   <button onclick="accountAction('register')">ثبت‌نام</button><button onclick="accountAction('login')">ورود</button>
+   <button class="secondary" onclick="accountResetPassword()">بازیابی رمز</button><button onclick="uploadMyAvatar()" class="secondary">بارگذاری تصویر</button>
    <button class="secondary" onclick="accountLogout()">خروج از حساب</button><button class="secondary" onclick="closeAccount()">بستن</button>
   </div>
-  <small style="display:block;margin-top:12px;color:#cbd5e1">پیشرفت بازی پس از ورود، روی سرور ذخیره می‌شود. برای کارکرد آنلاین، این بسته باید روی میزبان دارای HTTPS و فضای ذخیره‌سازی پایدار اجرا شود.</small>
+  <small style="display:block;margin-top:12px;color:#cbd5e1;line-height:1.8">پس از ثبت‌نام، ایمیلت را تأیید کن. پیشرفت بازی پس از ورود با حساب تو همگام می‌شود.</small>
  </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
+ 'use strict';
  const modal=document.getElementById('accountModal');
- const apiBase='';
- function token(){return localStorage.getItem('mrmath_token')||'';}
- function msg(t){document.getElementById('accountStatus').textContent=t;}
- window.openAccount=function(){modal.style.display='flex';modal.classList.remove('hidden');};
+ const statusEl=document.getElementById('accountStatus');
+ const $=id=>document.getElementById(id);
+ // Bind the account button directly, so the modal opens even if inline handlers are unavailable.
+ const accountOpenButton=$('accountOpenButton');
+ if(accountOpenButton) accountOpenButton.addEventListener('click',()=>{
+  modal.classList.remove('hidden');
+  modal.style.display='flex';
+  if(typeof window.openAccount==='function') window.openAccount();
+ });
+ const SUPABASE_URL='https://cjmxnlydgubbhhomvglx.supabase.co';
+ // Paste the project's Publishable key (sb_publishable_...) from Supabase here.
+ const SUPABASE_PUBLISHABLE_KEY='sb_publishable_ckLddtMeye_IF5y667uf_A_IimkmLb-';
+ let client=null, saveTimer=null, syncing=false, recoveryMode=false;
+ const msg=t=>{statusEl.textContent=t;};
+ function ready(){
+  if(client)return true;
+  if(!window.supabase||!window.supabase.createClient){msg('کتابخانه Supabase بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را تازه‌سازی کن.');return false;}
+  if(!SUPABASE_PUBLISHABLE_KEY||SUPABASE_PUBLISHABLE_KEY.includes('PASTE_')){msg('کلید Publishable پروژه هنوز در کد قرار نگرفته است.');return false;}
+  client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  return true;
+ }
+ function getGameData(){return window.mrMathData||{};}
+ function applyCloudData(cloud){
+  if(!cloud||typeof cloud!=='object')return;
+  const target=getGameData();
+  Object.keys(target).forEach(k=>delete target[k]);
+  Object.assign(target,cloud);
+  window.mrMathData=target;
+  if(typeof window.update==='function')window.update();
+  if(typeof window.mrApplyLanguage==='function')window.mrApplyLanguage();
+ }
+ async function saveCloudNow(){
+  if(!client)return;
+  const {data:{user}}=await client.auth.getUser();
+  if(!user)return;
+  const gameData=JSON.parse(JSON.stringify(getGameData()));
+  const nickname=(gameData.name||$('accNick').value||'بازیکن').slice(0,24);
+  const {error}=await client.from('teacher_math_saves').upsert({user_id:user.id,nickname,game_data:gameData,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+  if(error)throw error;
+ }
+ async function loadCloud(user){
+  if(!client||!user)return;
+  syncing=true;
+  try{
+   const {data:row,error}=await client.from('teacher_math_saves').select('game_data,nickname,updated_at').eq('user_id',user.id).maybeSingle();
+   if(error)throw error;
+   if(row&&row.game_data&&typeof row.game_data==='object'){
+    applyCloudData(row.game_data);
+    if(row.nickname)$('accNick').value=row.nickname;
+    msg('وارد شدی؛ پیشرفت ذخیره‌شدهٔ حسابت بارگذاری شد.');
+   }else{
+    if($('accNick').value.trim())getGameData().name=$('accNick').value.trim();
+    await saveCloudNow();
+    msg('حساب متصل شد؛ پیشرفت فعلی بازی در فضای آنلاین ذخیره شد.');
+   }
+  }catch(e){msg('ورود انجام شد، اما بارگذاری اطلاعات ناموفق بود: '+(e.message||'خطای ناشناخته'));}
+  finally{syncing=false;}
+ }
+ window.openAccount=function(){modal.classList.remove('hidden');modal.style.display='flex';try{if(ready())refreshAccountStatus().catch(e=>msg('وضعیت حساب بررسی نشد: '+(e.message||'خطای ارتباط')));}catch(e){msg('پنجره حساب باز شد، اما اتصال آماده نیست: '+(e.message||'خطای ناشناخته'));}};
  window.closeAccount=function(){modal.style.display='none';};
- async function call(path,opts={}) {
-  const headers=opts.headers||{};
-  if(token()) headers.Authorization='Bearer '+token();
-  if(opts.body && !(opts.body instanceof FormData)) headers['Content-Type']='application/json';
-  const res=await fetch(apiBase+path,{...opts,headers});
-  const out=await res.json().catch(()=>({}));
-  if(!res.ok) throw new Error(out.error||'خطا در ارتباط با سرور');
-  return out;
+ async function refreshAccountStatus(){
+  if(!ready())return;
+  const {data:{session}}=await client.auth.getSession();
+  if(session){$('accEmail').value=session.user.email||'';msg('حساب متصل است: '+(session.user.email||''));}
+  else msg('برای ذخیرهٔ پیشرفت روی حساب خودت وارد شو یا ثبت‌نام کن.');
  }
  window.accountAction=async function(action){
-  const email=document.getElementById('accEmail').value.trim();
-  const password=document.getElementById('accPass').value;
-  const nickname=document.getElementById('accNick').value.trim();
+  if(!ready())return;
+  const email=$('accEmail').value.trim(),password=$('accPass').value,nickname=$('accNick').value.trim();
+  if(!email){msg('لطفاً ایمیل را وارد کن.');return;}
+  if(!password||password.length<8){msg('رمز عبور باید حداقل ۸ نویسه داشته باشد.');return;}
   try{
-   msg('در حال اتصال...');
-   const out=await call('/api/'+action,{method:'POST',body:JSON.stringify({email,password,nickname})});
-   localStorage.setItem('mrmath_token',out.token);
-   if(out.gameData){data={...data,...out.gameData};update();}
-   if(out.nickname){data.name=out.nickname;update();}
-   msg('ورود موفق بود. پیشرفت بازی با حساب تو همگام می‌شود.');
-   scheduleCloudSave();
-  }catch(e){msg('وضعیت آفلاین: این قابلیت نیاز به اتصال به سرور دارد.');}
+   msg(action==='register'?'در حال ایجاد حساب...':'در حال ورود...');
+   if(action==='register'){
+    const {data,error}=await client.auth.signUp({email,password,options:{data:{nickname},emailRedirectTo:location.origin+location.pathname}});
+    if(error)throw error;
+    if(data.session){if(nickname)getGameData().name=nickname;msg('ثبت‌نام و ورود انجام شد؛ اطلاعات حسابت در حال همگام‌سازی است.');}
+    else msg('ثبت‌نام انجام شد. ایمیلت را باز کن و لینک تأیید را بزن؛ سپس به بازی برگرد و وارد شو.');
+   }else{
+    const {data,error}=await client.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    if(nickname)getGameData().name=nickname;
+    msg('ورود موفق بود؛ اطلاعات حسابت در حال همگام‌سازی است.');
+   }
+  }catch(e){msg('خطا: '+(e.message||'عملیات انجام نشد.'));}
  };
- window.accountLogout=function(){localStorage.removeItem('mrmath_token');msg('از حساب خارج شدی.');};
+ window.accountResetPassword=async function(){
+  if(!ready())return;
+  const email=$('accEmail').value.trim();if(!email){msg('ابتدا ایمیلت را وارد کن.');return;}
+  try{const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;msg('اگر این ایمیل در سیستم ثبت شده باشد، لینک بازیابی رمز برایش ارسال می‌شود. ایمیلت را بررسی کن.');}
+  catch(e){msg('ارسال لینک بازیابی ناموفق بود: '+e.message);}
+ };
+ window.accountSetNewPassword=async function(){
+  if(!ready())return;
+  const password=$('accNewPass').value;if(password.length<8){msg('رمز جدید باید حداقل ۸ نویسه داشته باشد.');return;}
+  try{const {error}=await client.auth.updateUser({password});if(error)throw error;recoveryMode=false;$('newPasswordWrap').classList.add('hidden');$('accNewPass').value='';msg('رمز عبور با موفقیت تغییر کرد.');}
+  catch(e){msg('تغییر رمز انجام نشد: '+e.message);}
+ };
+ window.accountLogout=async function(){
+  if(!ready())return;
+  try{const {error}=await client.auth.signOut();if(error)throw error;msg('از حساب خارج شدی. اطلاعات محلی این دستگاه پاک نمی‌شود.');}
+  catch(e){msg('خروج ناموفق بود: '+e.message);}
+ };
  window.uploadMyAvatar=async function(){
-  const f=document.getElementById('accAvatar').files[0];if(!f){msg('اول یک تصویر انتخاب کن.');return;}
-  const fd=new FormData();fd.append('avatar',f);
-  try{await call('/api/avatar',{method:'POST',body:fd});msg('تصویر پروفایل بارگذاری شد.');}
-  catch(e){msg('وضعیت آفلاین: این قابلیت نیاز به اتصال به سرور دارد.');}
+  if(!ready())return;
+  const file=$('accAvatar').files[0];if(!file){msg('اول یک تصویر انتخاب کن.');return;}
+  if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>2*1024*1024){msg('فقط تصویر PNG، JPG یا WebP تا حجم ۲ مگابایت مجاز است.');return;}
+  try{
+   const {data:{user}}=await client.auth.getUser();if(!user){msg('برای بارگذاری تصویر ابتدا وارد حساب شو.');return;}
+   const ext=file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+   const path=user.id+'/'+Date.now()+'.'+ext;
+   const {error}=await client.storage.from('teacher-math-avatars').upload(path,file,{upsert:true,contentType:file.type});if(error)throw error;
+   const {data:pub}=client.storage.from('teacher-math-avatars').getPublicUrl(path);
+   const {error:metaError}=await client.auth.updateUser({data:{avatar_url:pub.publicUrl}});if(metaError)throw metaError;
+   msg('تصویر پروفایل بارگذاری شد.');
+  }catch(e){msg('بارگذاری تصویر ناموفق بود: '+e.message);}
  };
- let saveTimer;
  window.scheduleCloudSave=function(){
-  if(!token())return;
+  if(!client)return;
   clearTimeout(saveTimer);
-  saveTimer=setTimeout(async()=>{try{await call('/api/save',{method:'POST',body:JSON.stringify({gameData:data})});}catch(e){msg('ذخیرهٔ آنلاین انجام نشد: '+e.message);}},900);
+  saveTimer=setTimeout(()=>saveCloudNow().catch(e=>msg('ذخیرهٔ آنلاین ناموفق بود: '+(e.message||'خطای ارتباط'))),1100);
  };
  const oldUpdate=window.update;
- // Existing game calls update internally; wrap it so each change is synced.
- if(typeof oldUpdate==='function') window.update=function(){oldUpdate();scheduleCloudSave();};
-})();
-
-
-
-// --- Reliability patch: scholar quiz, collection placement, and timed duel ---
-(function(){
- const $id=id=>document.getElementById(id);
- // Collection belongs in the player profile, not on the home screen.
- const collection=$id('scholarCardCollection'), identity=$id('profileIdentity');
- if(collection&&identity&&collection.parentElement!==identity.parentElement) identity.insertAdjacentElement('afterend',collection);
- const originalProfile=window.openPlayerProfile;
- window.openPlayerProfile=function(){if(typeof originalProfile==='function')originalProfile();renderScholarCollection();};
- const originalRenderCollection=window.renderScholarCollection;
- window.renderScholarCollection=function(){if(typeof originalRenderCollection==='function')originalRenderCollection();};
- // A clear, functioning 10-question quiz based on the selected scholar's own biography.
- window.startScholarQuiz=function(name){
-  const scholar=scholars.find(x=>x[0]===name);if(!scholar){alert('دانشمند پیدا نشد.');return;}
-  currentScholarName=name;
-  const bio=scholarBiographies[name]||scholar[2], period=scholar[1], achievement=scholar[2];
-  const otherNames=scholars.filter(x=>x[0]!==name).map(x=>x[0]);
-  const otherPeriods=scholars.filter(x=>x[0]!==name).map(x=>x[1]);
-  const otherAchievements=scholars.filter(x=>x[0]!==name).map(x=>x[2]);
-  const otherBios=scholars.filter(x=>x[0]!==name).map(x=>scholarBiographies[x[0]]||x[2]);
-  const raw=[
-   ['زندگی‌نامهٔ خوانده‌شده مربوط به کدام دانشمند است؟',name,otherNames],
-   [name+' در چه دوره‌ای زندگی می‌کرد؟',period,otherPeriods],
-   ['کدام دستاورد به '+name+' مربوط است؟',achievement,otherAchievements],
-   ['کدام گزینه دربارهٔ '+name+' درست است؟',bio,otherBios],
-   ['نام کدام دانشمند با این زندگی‌نامه پیوند دارد؟',name,otherNames],
-   ['بازهٔ زمانی زندگی '+name+' کدام است؟',period,otherPeriods],
-   ['مهم‌ترین فعالیت ریاضی '+name+' چه بود؟',achievement,otherAchievements],
-   ['کدام توصیف از زندگی '+name+' درست است؟',bio,otherBios],
-   ['این دستاورد را به چه کسی نسبت می‌دهند؟',achievement,otherAchievements],
-   ['کدام گزینه خلاصهٔ مناسبی از زندگی‌نامهٔ '+name+' است؟',bio,otherBios]
-  ];
-  scholarQuizState={name,questions:raw.map(([q,a,others])=>({q,a,opts:shuffleArray([a,...shuffleArray(others.filter(x=>x&&x!==a)).slice(0,3)])})),index:0,correct:0};
-  show('scholarQuiz');renderScholarQuizQuestion();
- };
- window.renderScholarQuizQuestion=function(){
-  const st=scholarQuizState;if(!st)return;
-  const q=st.questions[st.index];if(!q){finishScholarQuiz();return;}
-  $id('scholarQuizTitle').textContent='آزمون زندگی‌نامه: '+st.name;
-  $id('scholarQuizProgress').textContent=`سؤال ${st.index+1} از ۱۰ | پاسخ درست: ${st.correct}`;
-  $id('scholarQuizQuestion').textContent=q.q;
-  const opts=$id('scholarQuizOptions');opts.innerHTML='';
-  q.opts.forEach(opt=>{const b=document.createElement('button');b.className='card';b.type='button';b.textContent=opt;b.onclick=()=>{opts.querySelectorAll('button').forEach(x=>x.disabled=true);if(opt===q.a)st.correct++;st.index++;setTimeout(()=>{if(st.index>=10)finishScholarQuiz();else renderScholarQuizQuestion();},180);};opts.appendChild(b);});
- };
- // Keep the collection refreshed after quiz awards.
- window.finishScholarQuiz=function(){
-  const st=scholarQuizState;if(!st)return;
-  show('study');$id('scholarDetail').classList.remove('hidden');$id('scholars').classList.add('hidden');$id('searchScholar').classList.add('hidden');
-  $id('scholarDetailTitle').textContent=st.name+' — نتیجهٔ آزمون';$id('scholarDetailBody').innerHTML='';
-  const result=document.createElement('h3');result.textContent=`نتیجه: ${st.correct} از ۱۰`;$id('scholarDetailBody').appendChild(result);
-  if(st.correct>=7){
-   data.ownedScholarCards=data.ownedScholarCards||[];const first=!data.ownedScholarCards.includes(st.name);
-   if(first)data.ownedScholarCards.push(st.name);save();renderScholarCollection();showConfetti(7000);
-   if(first)notifyScholarCard(st.name);
-   const msg=document.createElement('p');msg.textContent=first?'🎉 کارت کلکسیونی این دانشمند را بردی!':'این کارت را قبلاً جمع‌آوری کرده‌ای!';$id('scholarDetailBody').appendChild(msg);
-  }else{const msg=document.createElement('p');msg.textContent='برای دریافت کارت باید دست‌کم ۷ پاسخ درست داشته باشی. دوباره تلاش کن!';$id('scholarDetailBody').appendChild(msg);}
-  const retry=document.createElement('button');retry.textContent='آزمون دوباره';retry.onclick=()=>startScholarQuiz(st.name);$id('scholarDetailBody').appendChild(retry);
-  const back=document.createElement('button');back.className='secondary';back.textContent='بازگشت به زندگی‌نامه';back.onclick=()=>openScholar(st.name);$id('scholarDetailBody').appendChild(back);
-  scholarQuizState=null;
- };
- // Pools contain the requested number of distinct questions; each round draws 50.
- window.makeDuelPool=function(level){
-  const target=level==='easy'?100:level==='medium'?200:100,pool=[],seen=new Set();
-  const add=(q,a)=>{if(!seen.has(q)){seen.add(q);pool.push({q,a});}};
-  if(level==='easy'){
-   for(let a=1;a<=30;a++)for(let b=1;b<=30;b++){add(`${a} + ${b} = ?`,a+b);add(`${Math.max(a,b)} − ${Math.min(a,b)} = ?`,Math.max(a,b)-Math.min(a,b));}
-   for(let a=2;a<=15;a++)for(let b=2;b<=12;b++)add(`${a} × ${b} = ?`,a*b);
-  }else if(level==='medium'){
-   for(let a=12;a<=70;a++)for(let b=3;b<=15;b++){add(`${a} × ${b} = ?`,a*b);add(`${a*b} ÷ ${b} = ?`,a);}
-   for(let a=10;a<80;a++)for(let b=2;b<20;b++)add(`${a+b} − ${b} = ?`,a);
-   for(let a=2;a<40;a++)for(let b=2;b<30;b++)add(`${b}x = ${a*b}، x = ؟`,a);
-  }else{
-   for(let a=12;a<80;a++)for(let b=11;b<55;b++){add(`${a} × ${b} = ?`,a*b);add(`${a*b} ÷ ${a} = ?`,b);}
-   for(let a=2;a<40;a++)for(let b=2;b<30;b++)add(`(${a}+${b})² = ?`,(a+b)**2);
-   for(let a=2;a<40;a++)for(let b=2;b<30;b++)add(`${a}² + ${b}² = ?`,a*a+b*b);
-  }
-  while(pool.length<target){const a=1+Math.floor(Math.random()*1000),b=1+Math.floor(Math.random()*100);add(`${a} + ${b} = ?`,a+b);}
-  return shuffleArray(pool).slice(0,target);
- };
- window.startDuel=function(level){
-  stopDuel();const pool=makeDuelPool(level),questions=shuffleArray(pool).slice(0,50);
-  duelState={level,questions,index:0,correct:0,wrong:0,started:Date.now(),aiCorrect:0,aiWrong:0,aiFinished:false};
-  $id('duelDifficulty').classList.add('hidden');$id('duelArena').classList.remove('hidden');$id('duelResult').classList.add('hidden');
-  $id('duelFinishButton').classList.add('hidden');$id('duelDifficultyLabel').textContent=level==='easy'?'آسان':level==='medium'?'متوسط':'سخت';
-  $id('duelFeedback').textContent='';renderDuelQuestion();
-  const duration=level==='medium'?600000:level==='hard'?300000:null;
-  if(level==='easy'){$id('duelTimer').textContent='هوش مصنوعی: ۲۰ درست، ۳۰ نادرست';duelState.aiCorrect=20;duelState.aiWrong=30;$id('duelAiScore').textContent='۲۰ درست / ۳۰ نادرست';}
-  else{
-   duelInterval=setInterval(()=>{
-    if(!duelState)return;const elapsed=Date.now()-duelState.started,remain=Math.max(0,duration-elapsed);
-    const target=level==='medium'?40:49;
-    duelState.aiCorrect=Math.min(target,Math.floor(elapsed/duration*target));
-    duelState.aiWrong=level==='medium'?Math.min(10,Math.floor(elapsed/duration*10)):Math.min(1,Math.floor(elapsed/duration));
-    $id('duelAiScore').textContent=`${duelState.aiCorrect} درست / ${duelState.aiWrong} نادرست`;
-    $id('duelTimer').textContent=`زمان: ${Math.floor(remain/60000)}:${String(Math.floor(remain/1000)%60).padStart(2,'0')}`;
-    if(remain===0){duelState.aiCorrect=target;duelState.aiWrong=level==='medium'?10:1;duelState.aiFinished=true;finishDuel();}
-   },200);
-  }
- };
- window.renderDuelQuestion=function(){
-  const st=duelState;if(!st)return;
-  if(st.index>=50){$id('duelQuestion').textContent='همهٔ ۵۰ سؤال را پاسخ دادی!';$id('duelAnswerForm').classList.add('hidden');$id('duelFinishButton').classList.remove('hidden');return;}
-  $id('duelAnswerForm').classList.remove('hidden');$id('duelFinishButton').classList.add('hidden');
-  const q=st.questions[st.index];$id('duelQuestion').textContent=`سؤال ${st.index+1} از ۵۰: ${q.q}`;$id('duelAnswer').value='';
-  $id('duelPlayerScore').textContent=`${st.correct} درست / ${st.wrong} نادرست`;$id('duelProgress').style.width=(st.index/50*100)+'%';
- };
- window.submitDuelAnswer=function(e){
-  e.preventDefault();if(!duelState||duelState.index>=50)return;
-  const st=duelState,q=st.questions[st.index],v=Number($id('duelAnswer').value);
-  if(Number.isFinite(v)&&Math.abs(v-q.a)<1e-8)st.correct++;else st.wrong++;
-  st.index++;$id('duelFeedback').textContent=(Number.isFinite(v)&&Math.abs(v-q.a)<1e-8)?'✅ درست!':'❌ پاسخ درست: '+q.a;
-  renderDuelQuestion();
- };
- window.finishDuel=function(){
-  if(!duelState)return;const st=duelState;clearInterval(duelInterval);duelInterval=null;
-  $id('duelArena').classList.add('hidden');$id('duelResult').classList.remove('hidden');
-  const ai=st.aiCorrect||0,player=st.correct;
-  let winner=player>ai?'تو برنده شدی! 🎉':player<ai?'هوش مصنوعی برنده شد. 🤖':'مساوی شدید! 🤝';
-  if(player>ai){const prize=st.level==='easy'?300:st.level==='medium'?400:600;data.coins=(data.coins||0)+prize;save();update();winner+=` جایزهٔ ${prize} سکه به تو رسید!`;}
-  $id('duelResult').innerHTML=`<h2>نتیجهٔ دوئل</h2><p>${winner}</p><p>تو: ${player} درست، ${st.wrong} نادرست، ${50-st.index} بی‌پاسخ</p><p>هوش مصنوعی: ${ai} درست، ${st.aiWrong||0} نادرست</p><button onclick="showDuel()">دوئل دوباره</button>`;
-  duelState=null;
- };
- window.stopDuel=function(){clearInterval(duelInterval);duelInterval=null;duelState=null;};
+ if(typeof oldUpdate==='function')window.update=function(){oldUpdate();window.scheduleCloudSave();};
+ if(ready()){
+  client.auth.onAuthStateChange((event,session)=>{
+   if(event==='PASSWORD_RECOVERY'){
+    recoveryMode=true;$('newPasswordWrap').classList.remove('hidden');
+    modal.style.display='flex';modal.classList.remove('hidden');msg('لینک معتبر است؛ رمز عبور جدیدت را وارد کن.');
+   }else if(event==='SIGNED_IN'&&session){
+    $('accEmail').value=session.user.email||'';
+    if(modal.style.display==='flex')msg('ورود موفق بود؛ در حال همگام‌سازی اطلاعات...');
+    Promise.resolve().then(()=>loadCloud(session.user));
+   }else if(event==='SIGNED_OUT'){
+    msg('از حساب خارج شدی. پیشرفت محلی بازی همچنان روی این دستگاه باقی است.');
+   }
+  });
+  client.auth.getSession().then(({data:{session}})=>{if(session)loadCloud(session.user);});
+ }
 })();
 </script>
 
