@@ -36,6 +36,15 @@ body[data-player-theme="messi"]:before{
 body[data-player-theme="messi"] .panel,
 body[data-player-theme="messi"] .card,
 body[data-player-theme="messi"] .tile{background:linear-gradient(145deg,rgba(10,24,48,.78),rgba(7,17,36,.84));backdrop-filter:blur(3px)}
+body[data-theme="messiBg"]:before{
+ content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+ background-image:linear-gradient(90deg,rgba(5,12,28,.78),rgba(5,12,28,.48)),url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Lionel_Messi%2C_Player_of_Argentina_national_football_team.JPG/500px-Lionel_Messi%2C_Player_of_Argentina_national_football_team.JPG");
+ background-size:cover;background-position:center 24%;background-repeat:no-repeat;opacity:.62
+}
+body[data-theme="messiBg"] .panel,
+body[data-theme="messiBg"] .card,
+body[data-theme="messiBg"] .tile{background:linear-gradient(145deg,rgba(10,24,48,.78),rgba(7,17,36,.84));backdrop-filter:blur(3px)}
+
 
 @media(max-width:560px){.wrap{padding:12px}.panel{padding:15px}.top{align-items:flex-start}}
 
@@ -154,6 +163,40 @@ body.scholar-reading .wrap{position:relative;z-index:1}
 .leaderboard-points{font-weight:900;color:#ffe08a;white-space:nowrap}
 .leaderboard-row.me{border-color:#f7d477;background:linear-gradient(120deg,#59451c,#263d70)}
 .leaderboard-demo{font-size:11px;color:#c5d2ed}
+
+/* MR MATH celebration effects v1: coin bursts, FIFA-style trophies, staged page entry, treasure reveal */
+.reward-celebration{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 45%,#283b69cc,#030817ee 72%);backdrop-filter:blur(7px);animation:celebrateFade .25s ease}
+.reward-celebration.hidden{display:none!important}.reward-celebration-card{position:relative;overflow:hidden;width:min(94vw,460px);padding:28px 22px 24px;text-align:center;border:2px solid #ffe08a;border-radius:28px;background:linear-gradient(145deg,#51360f,#172b50 55%,#10182e);box-shadow:0 0 35px #ffd16688,0 22px 70px #000b;animation:celebratePop .55s cubic-bezier(.2,1.5,.4,1)}
+.reward-celebration-card:before{content:'';position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent,#fff7,transparent 22%);animation:rewardSweep 3s linear infinite;pointer-events:none}.reward-celebration-card>*{position:relative}.reward-big-icon{font-size:76px;line-height:1.3;filter:drop-shadow(0 0 18px #ffe58a);animation:rewardFloat 1.5s ease-in-out infinite}.reward-celebration-title{font-size:25px;font-weight:1000;color:#ffe08a;margin:8px 0}.reward-celebration-detail{font-size:17px;line-height:1.9;color:#fff}.reward-coin-rain{position:absolute;inset:0;pointer-events:none;overflow:hidden}.reward-coin-rain i{position:absolute;top:-35px;font-style:normal;font-size:25px;animation:coinRain 2.2s ease-in forwards;filter:drop-shadow(0 3px 5px #000)}.reward-close{margin-top:16px;min-width:140px}
+@keyframes celebrateFade{from{opacity:0}to{opacity:1}}@keyframes celebratePop{0%{opacity:0;transform:translateY(35px) scale(.72)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes rewardSweep{to{transform:rotate(360deg)}}@keyframes rewardFloat{50%{transform:translateY(-10px) scale(1.08)}}@keyframes coinRain{to{transform:translateY(115vh) rotate(900deg);opacity:0}}
+.trophy-card.fifa-card{position:relative;isolation:isolate;min-height:205px;padding:16px 12px;border-radius:19px;border:2px solid #8b98b4;background:linear-gradient(155deg,#263d65,#111b35 55%,#080f20);box-shadow:inset 0 0 0 3px #ffffff12,0 12px 26px #0007;overflow:hidden;transition:transform .25s,box-shadow .25s}.trophy-card.fifa-card:before{content:'★  •  ★';position:absolute;top:8px;left:0;right:0;color:#ffffff32;font-size:15px;letter-spacing:12px}.trophy-card.fifa-card.earned{border-color:#ffe08a;background:linear-gradient(155deg,#80601d,#263d65 54%,#111b35);box-shadow:inset 0 0 0 3px #ffe08a33,0 0 25px #ffd16644,0 12px 26px #0008}.trophy-card.fifa-card.earned:after{content:'CHAMPION';position:absolute;bottom:9px;left:0;right:0;font-size:11px;letter-spacing:4px;color:#ffe08a88;font-weight:1000}.trophy-card.fifa-card.locked{filter:saturate(.55);opacity:.72}.trophy-card.fifa-card .trophy-icon{font-size:58px;filter:drop-shadow(0 5px 8px #0009);animation:medalHover 3s ease-in-out infinite}.trophy-card.fifa-card.earned .trophy-icon{filter:drop-shadow(0 0 13px #ffe08a)}@keyframes medalHover{50%{transform:translateY(-5px) rotate(2deg)}}
+.panel.is-visible>*{animation:pageItemIn .48s both;animation-delay:calc(var(--item-index,0)*65ms)}@keyframes pageItemIn{from{opacity:0;transform:translateY(15px) scale(.985);filter:blur(3px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.treasure-chest-stage{position:relative;margin:12px auto 20px;width:180px;height:150px;display:grid;place-items:center;perspective:500px}.treasure-chest{font-size:100px;filter:drop-shadow(0 8px 15px #0009);transform-origin:50% 80%;transition:transform .7s;z-index:2}.treasure-chest-stage.opening .treasure-chest{transform:rotateX(-32deg) translateY(-8px) scale(1.12);filter:drop-shadow(0 0 22px #ffe08a)}.treasure-chest-stage:before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#ffe88a;filter:blur(35px);opacity:0;transform:scale(.2);transition:all .7s}.treasure-chest-stage.opening:before{opacity:.95;transform:scale(1.7)}.treasure-prize-pop{position:absolute;z-index:3;font-size:38px;opacity:0;transform:translateY(35px) scale(.4);transition:all .8s .25s}.treasure-chest-stage.opening .treasure-prize-pop{opacity:1;transform:translateY(-62px) scale(1.35)}
+@media(prefers-reduced-motion:reduce){.panel.is-visible>*{animation:none}.reward-big-icon,.trophy-card.fifa-card .trophy-icon{animation:none}}
+
+
+/* Scholar collectible cards: original football-ultimate-team inspired design */
+.scholar-fifa-card{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:7px;width:clamp(172px,42vw,218px);min-height:292px;padding:13px 11px 12px;border:2px solid #f7d774;border-radius:19px;overflow:hidden;text-align:center;color:#fff;background:radial-gradient(circle at 50% 18%,#ffe9a866,transparent 42%),linear-gradient(155deg,#80601d 0%,#3c315d 44%,#111b35 100%);box-shadow:inset 0 0 0 3px #fff2,0 12px 28px #0008;animation:scholarCardReveal .55s cubic-bezier(.2,1.35,.35,1) both}
+.scholar-fifa-card:before{content:'✦  MR. MATH  ✦';position:absolute;top:7px;left:0;right:0;color:#fff9;font-size:9px;font-weight:1000;letter-spacing:2px;z-index:-0}
+.scholar-fifa-card:after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,#fff2 48%,transparent 68%);transform:translateX(-130%);animation:scholarCardShine 4s ease-in-out infinite;pointer-events:none}
+.scholar-fifa-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:15px;color:#ffe8a1;font-weight:1000}
+.scholar-fifa-rating{font-size:28px;line-height:1}.scholar-fifa-position{font-size:10px;letter-spacing:1px}
+.scholar-fifa-portrait{position:relative;z-index:1;width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid #ffe7a1;background:linear-gradient(145deg,#283c61,#101a30);box-shadow:0 0 0 4px #fff2,0 8px 18px #0008}
+.scholar-fifa-fallback{display:none;position:relative;z-index:1;width:112px;height:112px;border-radius:50%;border:3px solid #ffe7a1;background:linear-gradient(145deg,#6d5b8f,#18284b);align-items:center;justify-content:center;padding:9px;font-weight:1000;font-size:14px;line-height:1.5;box-shadow:0 0 0 4px #fff2,0 8px 18px #0008}
+.scholar-fifa-name{position:relative;z-index:1;font-weight:1000;font-size:14px;line-height:1.5;color:#fff7d7;text-shadow:0 2px 4px #0009;min-height:39px;display:flex;align-items:center;justify-content:center}
+.scholar-fifa-number{position:relative;z-index:1;font-size:9px;color:#ffe7a1;letter-spacing:1px;font-weight:900}
+.scholar-fifa-stats{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;border-top:1px solid #ffe7a177;padding-top:8px}
+.scholar-fifa-stat{display:flex;flex-direction:column;gap:1px}.scholar-fifa-stat b{font-size:17px;color:#fff}.scholar-fifa-stat small{font-size:9px;color:#ffe7a8}
+.scholar-fifa-earned{position:relative;z-index:1;font-size:9px;font-weight:1000;color:#fff4c4;letter-spacing:1px}
+@keyframes scholarCardReveal{from{opacity:0;transform:translateY(18px) rotateY(18deg) scale(.88)}to{opacity:1;transform:translateY(0) rotateY(0) scale(1)}}
+@keyframes scholarCardShine{0%,55%{transform:translateX(-130%)}85%,100%{transform:translateX(130%)}}
+@media(max-width:390px){.scholar-fifa-card{width:calc(50% - 7px);min-height:275px;padding:10px 7px}.scholar-fifa-portrait,.scholar-fifa-fallback{width:94px;height:94px}.scholar-fifa-name{font-size:12px}}
+
+
+.map-board{position:relative;min-height:330px;overflow:hidden;border:2px solid #6280b5;border-radius:22px;background:radial-gradient(ellipse at 30% 35%,#2f8a77 0 10%,transparent 11%),radial-gradient(ellipse at 65% 55%,#2f8a77 0 15%,transparent 16%),radial-gradient(ellipse at 82% 24%,#2f8a77 0 8%,transparent 9%),linear-gradient(145deg,#123d63,#071a37);background-size:cover;}
+.map-land{position:absolute;inset:0;display:grid;place-items:center;font-size:180px;opacity:.13;pointer-events:none}.map-pin{position:absolute;transform:translate(-50%,-50%);padding:7px 9px;min-width:48px;border:1px solid #ffe08a;background:#1b3159;color:white;border-radius:13px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:20px}.map-pin small{font-size:10px;color:#ffe8a1;white-space:nowrap}
+@media(max-width:560px){.map-board{min-height:290px}.map-pin{font-size:16px;padding:5px}.map-pin small{font-size:9px}}
+
 </style>
 
 <script>
@@ -189,6 +232,34 @@ const mrObserver=new MutationObserver(rs=>rs.forEach(r=>{
 document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.observe(document.body,{subtree:true,childList:true,characterData:true});});
 </script>
 
+
+<style>
+.scholar-answer-option{transition:transform .18s ease,background .18s ease,border-color .18s ease;text-align:center}
+.scholar-answer-option:disabled{opacity:1}
+.scholar-answer-correct{background:linear-gradient(120deg,#166534,#22c55e)!important;color:#fff!important;border:2px solid #86efac!important}
+.scholar-answer-wrong{background:linear-gradient(120deg,#991b1b,#ef4444)!important;color:#fff!important;border:2px solid #fca5a5!important}
+.scholar-quiz-feedback{margin:14px 0;padding:13px 16px;border-radius:14px;font-weight:800;text-align:center;animation:scholarFeedbackIn .35s ease both}
+.scholar-quiz-feedback.correct{background:#dcfce7;color:#14532d}.scholar-quiz-feedback.wrong{background:#fee2e2;color:#991b1b}
+.scholar-quiz-next{display:block;margin:12px auto;min-width:180px}
+@keyframes scholarFeedbackIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.scholar-card-reveal{position:fixed;inset:0;z-index:20000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;opacity:0;pointer-events:auto;transition:opacity .35s ease}
+.scholar-card-reveal.show{opacity:1}
+.scholar-card-reveal-shade{position:absolute;inset:0;background:radial-gradient(circle at center,rgba(250,204,21,.34),rgba(3,7,18,.96) 62%);backdrop-filter:blur(7px)}
+.scholar-card-reveal-stage{position:relative;width:min(78vw,300px);height:430px;perspective:1200px;transform-style:preserve-3d}
+.scholar-card-reveal-back,.scholar-card-reveal-front{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:24px;backface-visibility:hidden;overflow:hidden;box-shadow:0 0 45px 12px rgba(250,204,21,.55);border:3px solid #fde68a}
+.scholar-card-reveal-back{background:linear-gradient(145deg,#111827,#7c2d12,#f59e0b,#1f2937);color:#fff4c2;gap:20px;font-weight:1000;letter-spacing:2px}
+.scholar-card-reveal-back b{font-size:100px;text-shadow:0 0 30px #fff}
+.scholar-card-reveal-back span{font-size:30px}.scholar-card-reveal-back small{font-size:12px}
+.scholar-card-reveal-front{transform:rotateY(180deg);background:#111827;padding:8px}
+.scholar-card-reveal-front .scholar-fifa-card{width:100%;height:100%;margin:0}
+.scholar-card-reveal-stage{transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.scholar-card-reveal.flipped .scholar-card-reveal-stage{transform:rotateY(180deg)}
+.scholar-card-reveal-title{position:relative;color:#fff;font-size:clamp(20px,5vw,30px);font-weight:1000;text-align:center;text-shadow:0 2px 18px #f59e0b;opacity:0;transform:translateY(15px);transition:all .5s ease}
+.scholar-card-reveal-title.visible{opacity:1;transform:translateY(0)}
+.secret-code-box{padding:14px;border:1px dashed #d4a72c;border-radius:16px;margin:12px 0}
+.secret-code-box input{min-width:0;flex:1;padding:10px;border-radius:10px}
+@media(max-width:480px){.scholar-card-reveal-stage{height:390px;width:min(82vw,270px)}}
+</style>
 </head>
 <body>
 <div id="challengeToast" class="challenge-toast hidden" role="status"></div>
@@ -196,7 +267,7 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
 <div class="wrap">
 <header class="top">
   <div class="brand">Teacher Math <small>آقای ریاضی | یاد بگیر، فکر کن، برنده شو!</small></div>
-  <div class="row" style="flex:0 1 auto"><span class="pill" id="coinPill" onclick="showCoins()" title="رفتن به باشگاه سکه‌ها" style="cursor:pointer">🪙 0</span><span class="pill" id="playerPill" onclick="openPlayerProfile()" role="button" tabindex="0" style="cursor:pointer" title="نمایش پروفایل و افتخارات">بازیکن: مهمان</span><button class="pill" id="accountOpenButton" type="button" style="cursor:pointer">👤 حساب کاربری</button><button class="pill" onclick="showAvatars()" style="cursor:pointer">🎭 آواتارها</button></div>
+  <div class="row" style="flex:0 1 auto"><span class="pill" id="coinPill" onclick="showCoins()" title="رفتن به باشگاه سکه‌ها" style="cursor:pointer">🪙 0</span><span class="pill" id="playerPill" onclick="openPlayerProfile()" role="button" tabindex="0" style="cursor:pointer" title="نمایش پروفایل و افتخارات">بازیکن: مهمان</span><span class="pill" id="playerLevelPill">⭐ سطح ۱</span><button class="pill" id="accountOpenButton" type="button" style="cursor:pointer">👤 حساب کاربری</button><button class="pill" onclick="showAvatars()" style="cursor:pointer">🎭 آواتارها</button></div>
 </header>
 
 <section id="welcome" class="panel">
@@ -222,7 +293,13 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
   <button class="tile" onclick="showRewardShop()"><span>🪙</span><b>فروشگاه جوایز</b><small>خرید وسایل اتاق با سکه</small></button>
   <button class="tile" onclick="showPlayerRecords()"><span>📈</span><b>رکوردهای بازیکن</b><small>بهترین امتیازها و آمار</small></button>
   <button class="tile" onclick="showSpeedChallenge()"><span>⏱️</span><b>مسابقه سرعتی</b><small>۶۰ ثانیه برای حل سؤال‌ها</small></button>
-  <button class="tile" onclick="showEffects()"><span>✨</span><b>افکت‌های ویژه</b><small>درخشش و جشن موفقیت</small></button><button id="secretRoomHomeTile" class="tile hidden" onclick="showSecretRoom()"><span>🚪</span><b>اتاق مخفی</b><small>جایزه ویژه افتخارات برنزی</small></button>
+  <button class="tile" onclick="showEffects()"><span>✨</span><b>افکت‌های ویژه</b><small>درخشش و جشن موفقیت</small></button>
+  <button class="tile" onclick="showEndlessMode()"><span>♾️</span><b>مرحله بی‌نهایت</b><small>تا هر زمان که پاسخ درست بدهی</small></button>
+  <button class="tile" onclick="showGoldCup()"><span>🏆</span><b>جام طلایی</b><small>مراحل قهرمانی را کامل کن</small></button>
+  <button class="tile" onclick="showMathLab()"><span>🧪</span><b>آزمایشگاه ریاضی</b><small>آزمایش و محاسبه تعاملی</small></button>
+  <button class="tile" onclick="showFootballMath()"><span>⚽</span><b>ریاضی در فوتبال</b><small>زاویه، سرعت و آمار فوتبالی</small></button>
+  <button class="tile" onclick="showScientistMap()"><span>🌍</span><b>نقشه جهان دانشمندان</b><small>آشنایی با دانشمندان جهان</small></button>
+  <button id="secretRoomHomeTile" class="tile hidden" onclick="showSecretRoom()"><span>🚪</span><b>اتاق مخفی</b><small>جایزه ویژه افتخارات برنزی</small></button>
  </div>
  <p class="muted">هر پاسخ درست سکه دارد: آسان ۵، متوسط ۱۰، سخت ۲۰.</p>
 </section>
@@ -311,7 +388,7 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
  <div id="duelResult" class="card hidden"></div>
 </section>
 \n<section id="scholarQuiz" class="panel hidden"><div class="row"><h2 id="scholarQuizTitle">آزمون زندگی‌نامه</h2><button class="secondary" onclick="showStudy()">خروج</button></div><p id="scholarQuizProgress"></p><div class="card"><h3 id="scholarQuizQuestion"></h3><div id="scholarQuizOptions" class="grid"></div></div></section>
-<section id="study" class="panel hidden"><div class="row"><h2>دانشنامه ریاضی‌دانان</h2><button class="secondary" onclick="goHome()">بازگشت</button></div><input id="searchScholar" placeholder="جست‌وجوی نام دانشمند..." oninput="renderScholars()"><div id="scholars" class="grid"></div><div id="scholarDetail" class="card hidden" style="margin-top:16px"><div class="row"><h3 id="scholarDetailTitle"></h3><button class="secondary" onclick="closeScholarDetail()">بازگشت به دانشمندان</button></div><div id="scholarDetailBody"></div><button id="scholarQuizStart" onclick="startScholarQuiz()">📝 آزمون این دانشمند</button></div></section>
+<section id="study" class="panel hidden"><div class="row"><h2>دانشنامه ریاضی‌دانان</h2><button class="secondary" onclick="goHome()">بازگشت</button></div><input id="searchScholar" placeholder="جست‌وجوی نام دانشمند..." oninput="renderScholars()"><div id="scholars" class="grid"></div><div id="scholarDetail" class="card hidden" style="margin-top:16px"><div class="row"><h3 id="scholarDetailTitle"></h3><button class="secondary" onclick="closeScholarDetail()">بازگشت به دانشمندان</button></div><div id="scholarDetailBody"></div><button id="scholarQuizStart" type="button">📝 آزمون این دانشمند</button></div></section>
 <section id="shop" class="panel hidden"><div class="row"><h2>فروشگاه تم‌ها</h2><button class="secondary" onclick="goHome()">بازگشت</button></div><div id="shopItems"></div><div class="shop-wheel-panel"><h2>🎡 گردونه شانس فروشگاه</h2><p class="muted">هر ۲۴ ساعت فقط یک بار بچرخان! همه جایزه‌های فروشگاه در گردونه هستند؛ شانس بردن پس‌زمینه فقط ۱٪ است.</p><div class="shop-wheel-wrap"><div class="shop-wheel-pointer">▼</div><div id="shopPrizeWheel" class="shop-wheel"></div></div><div class="shop-wheel-balance">🪙 موجودی: <b id="shopWheelBalance">۰</b></div><button id="shopWheelSpinBtn" class="gold spin-btn" onclick="spinShopWheel()">🎡 چرخاندن گردونه فروشگاه</button><p id="shopWheelStatus" class="shop-wheel-status">هر روز یک شانس تازه!</p><div id="shopWheelPrize" class="coin-prize hidden"></div></div></section>
 <section id="coins" class="panel hidden">
  <div class="row"><h2>🪙 باشگاه سکه‌ها</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
@@ -339,16 +416,61 @@ document.addEventListener('DOMContentLoaded',()=>{mrApplyLanguage();mrObserver.o
  <label>زبان</label><select id="settingLang" onchange="changeLanguage(this.value)"><option value="fa">فارسی</option><option value="en">English</option><option value="ar">العربية</option><option value="zh">中文</option></select>
  <label class="feature-toggle"><input id="soundToggle" type="checkbox" checked style="width:auto" onchange="data.sound=this.checked;save()"> 🔊 صدای پاسخ‌ها و کلیک‌ها (روشن / خاموش)</label>
  <label><input id="musicToggle" type="checkbox" style="width:auto" onchange="toggleMusic(this.checked)"> 🎵 موسیقی پس‌زمینه (روشن / خاموش)</label>
+ <label class="feature-toggle"><input id="featureSoundToggle" type="checkbox" checked style="width:auto" onchange="setFeatureSound(this.checked)"> 🔔 افکت صدای بخش‌های جدید</label>
+ <label for="musicVolume">🔊 میزان صدای موسیقی</label><input id="musicVolume" type="range" min="0" max="100" value="35" oninput="setMusicVolume(this.value)">
  <button onclick="saveSettings()">ذخیره تنظیمات</button>
  <button class="secondary" onclick="resetGame()">پاک کردن پیشرفت بازی</button>
 </section>
 <div id="playerProfileModal" class="profile-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
  <div class="profile-dialog">
   <div class="row"><h2 id="profileTitle">👤 پروفایل بازیکن</h2><button class="secondary" onclick="closePlayerProfile()" id="profileClose">بستن</button></div>
-  <div id="profileIdentity" class="profile-identity"></div><div id="scholarCardCollection" class="card-collection-wrap"><div class="row"><h3>🃏 کارت‌های کلکسیونی دانشمندان</h3><span id="scholarCardCount" class="muted">۰ کارت</span></div><div id="scholarCardCollectionGrid" class="scholar-card-collection"></div></div><div class="profile-divider"></div><h3>🏡 اتاق شخصی من</h3><p class="muted">وسایلی که از فروشگاه جوایز خریده‌ای اینجا نمایش داده می‌شوند.</p><div id="playerRoom" class="room-stage"></div><div class="profile-divider"></div>
+  <div id="profileIdentity" class="profile-identity"></div><div id="scholarCardCollection" class="card-collection-wrap"><div class="row"><h3>🃏 کارت‌های کلکسیونی دانشمندان</h3><span id="scholarCardCount" class="muted">۰ کارت</span></div><div id="scholarCardCollectionGrid" class="scholar-card-collection"></div></div><div class="profile-divider"></div><div class="secret-code-box"><h3>🎁 کد هدیه</h3><p class="muted">اگر کد ویژه‌ای داری، اینجا وارد کن.</p><div class="row"><input id="specialGiftCode" type="text" autocomplete="off" placeholder="کد را وارد کن" aria-label="کد هدیه"><button type="button" class="gold" id="redeemSpecialGift">ثبت کد</button></div><p id="specialGiftStatus" class="muted" aria-live="polite"></p></div><div class="profile-divider"></div><h3>🏡 اتاق شخصی من</h3><p class="muted">وسایلی که از فروشگاه جوایز خریده‌ای اینجا نمایش داده می‌شوند.</p><div id="playerRoom" class="room-stage"></div><div class="profile-divider"></div>
   <h3 id="profileTrophiesTitle">🏆 جام‌ها و افتخارات</h3><div id="profileTrophyList" class="grid"></div>
  </div>
 </div>
+
+
+<section id="endlessMode" class="panel hidden">
+ <div class="row"><h2>♾️ مرحله بی‌نهایت</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
+ <p class="muted">تا وقتی پاسخ‌ها درست باشند ادامه بده. هر پاسخ درست ۵ سکه دارد.</p>
+ <div class="row"><span class="pill" id="endlessScore">پاسخ درست: ۰</span><span class="pill" id="endlessStreak">رکورد پیاپی: ۰</span></div>
+ <div id="endlessQuestion" class="question">برای شروع دکمه را بزن.</div><div id="endlessAnswers" class="answers"></div><p id="endlessFeedback" class="feedback"></p>
+ <button id="endlessStart" class="gold" onclick="startEndless()">شروع مرحله بی‌نهایت</button><button id="endlessStop" class="secondary hidden" onclick="stopEndless()">پایان بازی</button>
+</section>
+<section id="goldCup" class="panel hidden">
+ <div class="row"><h2>🏆 جام طلایی</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
+ <p class="muted">برای قهرمانی، سه مرحله را پشت سر بگذار. هر مرحله پنج سؤال دارد.</p>
+ <div class="progress"><div id="cupProgressFill"></div></div><p id="cupStageLabel" class="pill">مرحله ۱ از ۳</p>
+ <div id="cupQuestion" class="question">برای آغاز رقابت آماده‌ای؟</div><div id="cupAnswers" class="answers"></div><p id="cupFeedback" class="feedback"></p>
+ <button id="cupStart" class="gold" onclick="startGoldCup()">شروع رقابت</button>
+</section>
+<section id="mathLab" class="panel hidden">
+ <div class="row"><h2>🧪 آزمایشگاه ریاضی</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
+ <div class="grid">
+  <div class="feature-card"><h3>📐 مساحت مستطیل</h3><label>طول</label><input id="labLength" type="number" min="0" value="8"><label>عرض</label><input id="labWidth" type="number" min="0" value="5"><button onclick="calcRectangle()">محاسبه مساحت</button><p id="labRectangleResult" class="pill">نتیجه اینجا نمایش داده می‌شود.</p></div>
+  <div class="feature-card"><h3>⭕ مساحت دایره</h3><label>شعاع</label><input id="labRadius" type="number" min="0" value="4"><button onclick="calcCircle()">محاسبه مساحت</button><p id="labCircleResult" class="pill">نتیجه اینجا نمایش داده می‌شود.</p></div>
+  <div class="feature-card"><h3>🧮 ماشین حساب</h3><label>عدد اول</label><input id="labA" type="number" value="12"><label>عملیات</label><select id="labOp"><option value="+">جمع +</option><option value="-">تفریق −</option><option value="*">ضرب ×</option><option value="/">تقسیم ÷</option></select><label>عدد دوم</label><input id="labB" type="number" value="3"><button onclick="calcLab()">محاسبه</button><p id="labCalcResult" class="pill">نتیجه اینجا نمایش داده می‌شود.</p></div>
+ </div>
+</section>
+<section id="footballMath" class="panel hidden">
+ <div class="row"><h2>⚽ ریاضی در فوتبال</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
+ <p class="muted">با موقعیت‌های فوتبالی، محاسبه و تمرین کن.</p><div class="room-stage"><span class="room-object">🥅</span><span class="room-object">⚽</span><span class="room-object">📐</span></div>
+ <div class="row"><span class="pill" id="footballScore">امتیاز: ۰</span><span class="pill" id="footballCoins">جایزه هر پاسخ درست: ۵ سکه</span></div>
+ <div id="footballQuestion" class="question">برای شروع تمرین فوتبال ریاضی آماده‌ای؟</div><div id="footballAnswers" class="answers"></div><p id="footballFeedback" class="feedback"></p><button class="gold" id="footballStart" onclick="nextFootballQuestion()">شروع تمرین</button>
+</section>
+<section id="scientistMap" class="panel hidden">
+ <div class="row"><h2>🌍 نقشه جهان دانشمندان</h2><button class="secondary" onclick="goHome()">بازگشت</button></div>
+ <p class="muted">روی هر نقطه بزن تا با دانشمند و زادگاه او آشنا شوی.</p>
+ <div class="map-board" role="group" aria-label="نقشه آموزشی جهان"><div class="map-land">🌐</div>
+  <button class="map-pin" style="left:48%;top:31%" onclick="mapScholar('آیزاک نیوتن','انگلستان','قوانین حرکت و گرانش')">🇬🇧<small>نیوتن</small></button>
+  <button class="map-pin" style="left:52%;top:38%" onclick="mapScholar('آلبرت اینشتین','آلمان','نظریه نسبیت')">🇩🇪<small>اینشتین</small></button>
+  <button class="map-pin" style="left:59%;top:50%" onclick="mapScholar('محمد بن موسی خوارزمی','خوارزم','جبر و الگوریتم')">🌟<small>خوارزمی</small></button>
+  <button class="map-pin" style="left:65%;top:57%" onclick="mapScholar('ابوریحان بیرونی','خوارزم','نجوم و اندازه‌گیری زمین')">📍<small>بیرونی</small></button>
+  <button class="map-pin" style="left:71%;top:66%" onclick="mapScholar('مریم میرزاخانی','ایران','هندسه و فضاهای پیمانه‌ای')">🇮🇷<small>میرزاخانی</small></button>
+  <button class="map-pin" style="left:24%;top:43%" onclick="mapScholar('کاترین جانسون','ایالات متحده','محاسبات مأموریت‌های فضایی')">🇺🇸<small>جانسون</small></button>
+  <button class="map-pin" style="left:83%;top:48%" onclick="mapScholar('فیثاغورس','یونان باستان','قضیه فیثاغورس')">🇬🇷<small>فیثاغورس</small></button>
+ </div><div id="mapScholarInfo" class="card" style="margin-top:14px">یک دانشمند را از روی نقشه انتخاب کن.</div>
+</section>
 
 <footer>Created by Seyed Ali Habibi · Class 8/3 · Teacher Math</footer>
 </div>
@@ -435,10 +557,10 @@ const scholars=[
 ['محمدباقر یزدی','درگذشته حدود سده ۱۷ میلادی','ریاضی‌دان ایرانی؛ از آثار او در حساب و کسرها یاد شده است.'],
 ['آلبرت اینشتین','۱۸۷۹ تا ۱۹۵۵ میلادی','فیزیک‌دان نظری؛ نظریه نسبیت را ارائه کرد و در تاریخ علم از چهره‌های بسیار اثرگذار است.']
 ];
-const themes=[['classic','کلاسیک آبی','پیش‌فرض',0,'🟦'],['stadium','استادیوم','تم فوتبالی با حال‌وهوای ورزشگاه',200,'🏟️'],['goldcup','جام طلایی','تم ویژه قهرمانی',200,'🏆'],['number10','شماره ۱۰','تم فوتبالی الهام‌گرفته از پیراهن شماره ۱۰',200,'🔟'],['youngstar','ستاره جوان','تم پرانرژی ستاره‌های آینده',200,'⭐'],['worldcup','جام جهانی','تم جشن فوتبال جهانی',200,'🌍'],['cosmic','کهکشان','تم درخشان فضایی با رنگ‌های بنفش و آبی',200,'🌌'],['forest','جنگل زمردی','تم آرام با رنگ‌های سبز و فیروزه‌ای',200,'🌿'],['candy','آبنباتی','تم شاد با رنگ‌های صورتی و یاسی',200,'🍬'],['ocean','اقیانوس','تم آبی و موج‌های درخشان',200,'🌊'],['nebula','سحابی بنفش','پس‌زمینه کمیاب با ابرهای کیهانی',200,'🌌'],['aurora','شفق قطبی','پس‌زمینه کمیاب با نورهای شمالی',200,'🌈'],['sunset','غروب طلایی','پس‌زمینه کمیاب با آسمان غروب',200,'🌅'],['crystalbg','قصر کریستالی','پس‌زمینه کمیاب با درخشش کریستال',200,'💠']];
+const themes=[['classic','کلاسیک آبی','پیش‌فرض',0,'🟦'],['stadium','استادیوم','تم فوتبالی با حال‌وهوای ورزشگاه',200,'🏟️'],['goldcup','جام طلایی','تم ویژه قهرمانی',200,'🏆'],['number10','شماره ۱۰','تم فوتبالی الهام‌گرفته از پیراهن شماره ۱۰',200,'🔟'],['youngstar','ستاره جوان','تم پرانرژی ستاره‌های آینده',200,'⭐'],['worldcup','جام جهانی','تم جشن فوتبال جهانی',200,'🌍'],['cosmic','کهکشان','تم درخشان فضایی با رنگ‌های بنفش و آبی',200,'🌌'],['forest','جنگل زمردی','تم آرام با رنگ‌های سبز و فیروزه‌ای',200,'🌿'],['candy','آبنباتی','تم شاد با رنگ‌های صورتی و یاسی',200,'🍬'],['ocean','اقیانوس','تم آبی و موج‌های درخشان',200,'🌊'],['nebula','سحابی بنفش','پس‌زمینه کمیاب با ابرهای کیهانی',200,'🌌'],['aurora','شفق قطبی','پس‌زمینه کمیاب با نورهای شمالی',200,'🌈'],['sunset','غروب طلایی','پس‌زمینه کمیاب با آسمان غروب',200,'🌅'],['crystalbg','قصر کریستالی','پس‌زمینه کمیاب با درخشش کریستال',200,'💠'],['messiBg','پس‌زمینهٔ مسی','پس‌زمینهٔ ویژه با حال‌وهوای لیونل مسی',200,'⚽']];
 let round=[],index=0,score=0,level='easy',locked=false,writtenMode=false;
 const writtenQuestions=[['عدد ۳۶ را به دو روش متفاوت به عوامل اول تجزیه کن.','۲×۲×۳×۳'],['محیط مستطیلی با طول ۸ و عرض ۵ سانتی‌متر را حساب کن.','۲۶'],['اگر x+7=19 باشد، مقدار x را پیدا کن.','۱۲'],['مجموع زاویه‌های داخلی مثلث چند درجه است؟ توضیح بده.','۱۸۰']];
-function save(){try{localStorage.setItem('mrmath_save_v4',JSON.stringify(data));}catch(e){}if(window.scheduleCloudSave)window.scheduleCloudSave();}
+function save(){try{localStorage.setItem('mrmath_save_v4',JSON.stringify(data));}catch(e){}if(window.scheduleCloudSave)window.scheduleCloudSave();}window.mrMathSave=save;
 function recordCompletedGame(total,correct){
  total=Math.max(0,Number(total)||0);correct=Math.max(0,Math.min(total,Number(correct)||0));
  data.totalGames=(Number(data.totalGames)||0)+1;data.totalCorrect=(Number(data.totalCorrect)||0)+correct;data.totalIncorrect=(Number(data.totalIncorrect)||0)+(total-correct);
@@ -463,16 +585,16 @@ function recordCompletedGame(total,correct){
  function renderTrophyCards(root,compact=false){
   root.innerHTML='';const earned=data.earnedTrophies||[];
   if(compact&&!earned.length){const p=document.createElement('p');p.className='muted';p.textContent=trophyText('none');root.appendChild(p);return;}
-  trophyMilestones.forEach(item=>{if(compact&&!earned.includes(item.id))return;const got=earned.includes(item.id),card=document.createElement('div');card.className='card trophy-card '+(got?'earned':'locked');const icon=document.createElement('div');icon.className='trophy-icon '+item.tier;icon.textContent=item.icon;const name=document.createElement('b');name.textContent=trophyLabel(item);const detail=document.createElement('small');detail.className='muted';detail.textContent=got?trophyText('earned'):trophyText('locked');card.append(icon,name,detail);root.appendChild(card);});
+  trophyMilestones.forEach(item=>{if(compact&&!earned.includes(item.id))return;const got=earned.includes(item.id),card=document.createElement('div');card.className='card trophy-card fifa-card '+(got?'earned':'locked');const icon=document.createElement('div');icon.className='trophy-icon '+item.tier;icon.textContent=item.icon;const name=document.createElement('b');name.textContent=trophyLabel(item);const detail=document.createElement('small');detail.className='muted';detail.textContent=got?trophyText('earned'):trophyText('locked');card.append(icon,name,detail);root.appendChild(card);});
  }
  function showTrophyToast(item){
-  const toast=$('trophyToast');toast.textContent=trophyText('success',{n:item.count,award:trophyLabel(item)});toast.classList.remove('hidden');
+  const toast=$('trophyToast');toast.textContent=trophyText('success',{n:item.count,award:trophyLabel(item)});toast.classList.remove('hidden');showRewardCelebration('افتخار جدید باز شد!',trophyText('success',{n:item.count,award:trophyLabel(item)}),item.icon,0);
   if(data.specialEffects!==false)for(let i=0;i<90;i++){const bit=document.createElement('i');bit.className='trophy-confetti';bit.style.left=(Math.random()*100)+'vw';bit.style.background=['#ffd166','#55d6e8','#4ade80','#fb7185','#a78bfa','#ffffff'][i%6];bit.style.animationDelay=(Math.random()*.8)+'s';bit.style.animationDuration=(4.8+Math.random()*.3)+'s';document.body.appendChild(bit);setTimeout(()=>bit.remove(),7200);}
   clearTimeout(window.trophyToastTimer);window.trophyToastTimer=setTimeout(()=>toast.classList.add('hidden'),10000);
  }
  function checkTrophyMilestones(){data.earnedTrophies=Array.isArray(data.earnedTrophies)?data.earnedTrophies:[];data.ownedDecorations=Array.isArray(data.ownedDecorations)?data.ownedDecorations:[];data.specialEffects=data.specialEffects!==false;data.currentStreak=Number(data.currentStreak)||0;data.bestStreak=Number(data.bestStreak)||0;data.speedBest=Number(data.speedBest)||0;data.speedAttempts=Number(data.speedAttempts)||0;const total=Number(data.trophyCorrectQuestions)||0;trophyMilestones.forEach(item=>{if(total>=item.count&&!data.earnedTrophies.includes(item.id)){data.earnedTrophies.push(item.id);save();showTrophyToast(item);}});syncSecretRoomTile();}
  window.showTrophies=function(){show('trophies');$('trophyPageTitle').textContent='🏆 '+trophyText('title');$('trophyBack').textContent=trophyText('back');$('trophyProgress').textContent=trophyText('progress',{n:Number(data.trophyCorrectQuestions)||0});renderTrophyCards($('trophyList'));};
- window.openPlayerProfile=function(){$('profileTitle').textContent='👤 '+trophyText('profile');$('profileClose').textContent=trophyText('close');$('profileTrophiesTitle').textContent='🏆 '+trophyText('title');$('profileIdentity').textContent=trophyText('name')+': '+(data.name||'—')+'　 |　 '+trophyText('age')+': '+(data.age||'—');renderTrophyCards($('profileTrophyList'),true);renderPlayerRoom();$('playerProfileModal').classList.remove('hidden');};
+ window.openPlayerProfile=function(){$('profileTitle').textContent='👤 '+trophyText('profile');$('profileClose').textContent=trophyText('close');$('profileTrophiesTitle').textContent='🏆 '+trophyText('title');$('profileIdentity').textContent=trophyText('name')+': '+(data.name||'—')+'　 |　 '+trophyText('age')+': '+(data.age||'—');renderTrophyCards($('profileTrophyList'),true);renderPlayerRoom();renderScholarCollection();$('playerProfileModal').classList.remove('hidden');};
  window.closePlayerProfile=function(){$('playerProfileModal').classList.add('hidden');};
 
  window.redeemRewardCode=function(){
@@ -532,8 +654,13 @@ function renderSuccessChart(){
 function hasBronzeUnlock(){return (data.earnedTrophies||[]).includes('bronze_medal_10')&&(data.earnedTrophies||[]).includes('bronze_cup_20');}
 function syncSecretRoomTile(){const b=$('secretRoomHomeTile');if(b)b.classList.toggle('hidden',!hasBronzeUnlock());}
 window.showSecretRoom=function(){if(!hasBronzeUnlock())return;show('secretRoom');};
-function update(){ syncSecretRoomTile(); $('coinPill').textContent='🪙 '+data.coins;$('playerPill').textContent='بازیکن: '+(data.name||'مهمان');document.body.dataset.theme=data.theme;document.body.dataset.playerTheme=data.playerTheme||'';const colors={classic:['#0b1226','#1d3260'],stadium:['#071d1b','#14634b'],goldcup:['#261a0b','#745018'],number10:['#160f2d','#553c8e'],youngstar:['#10233a','#176b9a'],worldcup:['#17213c','#315d91'],cosmic:['#160d32','#6844a5'],forest:['#082b27','#16806a'],candy:['#35162f','#a94c91'],ocean:['#08253b','#087eaa'],nebula:['#160b36','#8b5cf6'],aurora:['#062b35','#27c6a5'],sunset:['#3b1734','#f08b48'],crystalbg:['#132b49','#7dd3fc']};let c=colors[data.theme]||colors.classic;document.body.style.background=`radial-gradient(circle at 15% 10%,${c[1]} 0,transparent 36%),radial-gradient(circle at 90% 80%,#673e8a 0,transparent 28%),linear-gradient(145deg,${c[0]},#10172f 70%)`;document.body.style.backgroundAttachment='fixed';applyCursor();save();}
-function show(id){document.querySelectorAll('.panel[id]').forEach(p=>{p.classList.add('hidden');p.classList.remove('is-visible');});const panel=$(id);if(!panel)return;panel.classList.remove('hidden');requestAnimationFrame(()=>panel.classList.add('is-visible'));}
+function update(){ syncSecretRoomTile(); $('coinPill').textContent='🪙 '+data.coins;$('playerPill').textContent='بازیکن: '+(data.name||'مهمان');if($('playerLevelPill'))$('playerLevelPill').textContent='⭐ سطح '+Math.max(1,Math.floor((Number(data.correctQuestions||data.totalCorrect||0))/10)+1);document.body.dataset.theme=data.theme;document.body.dataset.playerTheme=data.playerTheme||'';const colors={classic:['#0b1226','#1d3260'],stadium:['#071d1b','#14634b'],goldcup:['#261a0b','#745018'],number10:['#160f2d','#553c8e'],youngstar:['#10233a','#176b9a'],worldcup:['#17213c','#315d91'],cosmic:['#160d32','#6844a5'],forest:['#082b27','#16806a'],candy:['#35162f','#a94c91'],ocean:['#08253b','#087eaa'],nebula:['#160b36','#8b5cf6'],aurora:['#062b35','#27c6a5'],sunset:['#3b1734','#f08b48'],crystalbg:['#132b49','#7dd3fc']};let c=colors[data.theme]||colors.classic;document.body.style.background=`radial-gradient(circle at 15% 10%,${c[1]} 0,transparent 36%),radial-gradient(circle at 90% 80%,#673e8a 0,transparent 28%),linear-gradient(145deg,${c[0]},#10172f 70%)`;document.body.style.backgroundAttachment='fixed';applyCursor();save();}
+function show(id){document.querySelectorAll('.panel[id]').forEach(p=>{p.classList.add('hidden');p.classList.remove('is-visible');});const panel=$(id);if(!panel)return;panel.classList.remove('hidden');requestAnimationFrame(()=>{panel.classList.add('is-visible');[...panel.children].forEach((el,i)=>el.style.setProperty('--item-index',Math.min(i,12)));});}
+window.show = show;
+function showRewardCelebration(title,detail,icon='🎉',coins=0){
+ let layer=document.getElementById('rewardCelebration');if(!layer){layer=document.createElement('div');layer.id='rewardCelebration';layer.className='reward-celebration hidden';layer.innerHTML='<div class="reward-celebration-card" role="dialog" aria-modal="true"><div class="reward-coin-rain"></div><div class="reward-big-icon"></div><div class="reward-celebration-title"></div><div class="reward-celebration-detail"></div><button class="gold reward-close" type="button">ادامه</button></div>';document.body.appendChild(layer);layer.querySelector('button').onclick=()=>layer.classList.add('hidden');layer.addEventListener('click',e=>{if(e.target===layer)layer.classList.add('hidden');});}
+ layer.querySelector('.reward-big-icon').textContent=icon;layer.querySelector('.reward-celebration-title').textContent=title;layer.querySelector('.reward-celebration-detail').textContent=detail;const rain=layer.querySelector('.reward-coin-rain');rain.innerHTML='';if(coins>0){for(let i=0;i<22;i++){const c=document.createElement('i');c.textContent='🪙';c.style.left=(Math.random()*100)+'%';c.style.animationDelay=(Math.random()*.9)+'s';c.style.animationDuration=(1.6+Math.random()*.9)+'s';rain.appendChild(c);}}layer.classList.remove('hidden');
+}
 const welcomeText={fa:['سلام، سازنده!','به بازی Teacher Math خوش آمدید؛ بیایید بازی را شروع کنیم.','شروع کنیم 🚀','نویسنده','سید علی حبیبی','ادامه','ساخت پروفایل بازیکن','نام بازیکن','سن','زبان','ورود به بازی 🎮'],en:['Hello, creator!','Welcome to Teacher Math. Let’s start the game!','Let’s begin 🚀','Created by','Seyed Ali Habibi','Continue','Create player profile','Player name','Age','Language','Enter the game 🎮'],ar:['مرحبًا أيها المنشئ!','أهلًا بك في لعبة Teacher Math، هيا نبدأ اللعب!','لنبدأ 🚀','تأليف','سيد علي حبيبي','متابعة','إنشاء ملف اللاعب','اسم اللاعب','العمر','اللغة','دخول اللعبة 🎮'],zh:['你好，创作者！','欢迎来到 Teacher Math 游戏，让我们开始吧！','开始吧 🚀','作者','Seyed Ali Habibi','继续','创建玩家资料','玩家姓名','年龄','语言','进入游戏 🎮']};
 window.welcomeNext=function(step){[1,2,3].forEach(n=>$('welcomeStep'+n).classList.toggle('hidden',n!==step));const t=welcomeText[data.lang||'fa'];['welcomeTitle','welcomeIntro','welcomeStart','welcomeAuthorTitle','welcomeAuthor','welcomeContinue','welcomeProfileTitle','welcomeNameLabel','welcomeAgeLabel','welcomeLangLabel','welcomeFinish'].forEach((id,i)=>{const e=$(id);if(e)e.textContent=t[i];});$('playerAge').value=data.age||'';};
 window.startGame=function(){const firstRegistration=!data.onboardingDone;data.name=$('playerName').value.trim()||'بازیکن';data.age=$('playerAge').value.trim();data.lang=$('lang').value;data.onboardingDone=true;if(firstRegistration){data.completedChallenges=data.completedChallenges||[];if(!data.completedChallenges.includes('signup300')){data.completedChallenges.push('signup300');notifyChallenge('ثبت‌نام حساب کاربری انجام شد؛ ۳۰۰ سکه به‌عنوان جایزه آماده دریافت است!');}}window.mrMathData=data;save();mrApplyLanguage();$('hello').textContent='سلام '+data.name+'! آماده‌ای؟';show('home');update();checkChallenges();};
@@ -615,7 +742,7 @@ document.addEventListener('pointerdown',function(e){
  const target=e.target.closest('button,[role="button"],.tile');
  if(target && !target.disabled && !target.classList.contains('sound-silent'))clickSound();
 },true);
-function answer(ok,btn){if(locked)return;locked=true;countQuestion(ok);let buttons=[...$('answers').children];buttons.forEach(b=>b.disabled=true);if(ok){let reward={easy:5,medium:10,hard:20}[level];data.coins+=reward;score++;celebrate();$('feedback').textContent='آفرین! پاسخ درست بود. +'+reward+' سکه';$('feedback').className='feedback good';btn.style.borderColor='#4ade80';}else{$('feedback').textContent='این بار درست نبود؛ پاسخ درست: '+round[index][1][round[index][2]];$('feedback').className='feedback bad';btn.style.borderColor='#fb7185';}beep(ok);if(ok&&data.specialEffects!==false){const flash=$('effectPreview');if(flash){flash.classList.remove('effect-pulse');void flash.offsetWidth;flash.classList.add('effect-pulse');}}update();$('bar').style.width=((index+1)/5*100)+'%';$('nextBtn').textContent=index===4?'پایان آزمون':'سؤال بعدی';$('nextBtn').classList.remove('hidden');}
+function answer(ok,btn){if(locked)return;locked=true;countQuestion(ok);let buttons=[...$('answers').children];buttons.forEach(b=>b.disabled=true);if(ok){let reward={easy:5,medium:10,hard:20}[level];data.coins+=reward;score++;celebrate();showRewardCelebration('آفرین! پاسخ درست بود', '+'+reward+' سکه به موجودی تو اضافه شد.', '🪙', reward);$('feedback').textContent='آفرین! پاسخ درست بود. +'+reward+' سکه';$('feedback').className='feedback good';btn.style.borderColor='#4ade80';}else{$('feedback').textContent='این بار درست نبود؛ پاسخ درست: '+round[index][1][round[index][2]];$('feedback').className='feedback bad';btn.style.borderColor='#fb7185';}beep(ok);if(ok&&data.specialEffects!==false){const flash=$('effectPreview');if(flash){flash.classList.remove('effect-pulse');void flash.offsetWidth;flash.classList.add('effect-pulse');}}update();$('bar').style.width=((index+1)/5*100)+'%';$('nextBtn').textContent=index===4?'پایان آزمون':'سؤال بعدی';$('nextBtn').classList.remove('hidden');}
 window.beginWritten=function(){$('hintOrb').classList.add('hidden');closeQuestionHelp();writtenMode=true;level='written';round=writtenQuestions.slice().sort(()=>Math.random()-.5).slice(0,4);index=0;score=0;$('quizArea').classList.remove('hidden');renderQuestion();$('qLevel').textContent='تشریحی';};
 window.checkWritten=async function(){
  if(locked)return;
@@ -804,6 +931,11 @@ window.openScholar=function(name){
  body.appendChild(bio);
  const note=document.createElement('p');note.className='muted';note.textContent='تصویر در صورت در دسترس بودن منبع اینترنتی نمایش داده می‌شود.';body.appendChild(note);
  $('scholarDetailTitle').textContent=name;
+ const quizStartButton=$('scholarQuizStart');
+ if(quizStartButton){
+  quizStartButton.type='button';
+  quizStartButton.onclick=()=>window.startScholarQuiz(name);
+ }
  $('scholarDetail').classList.remove('hidden');$('scholars').classList.add('hidden');$('searchScholar').classList.add('hidden');
  const previous=document.body.dataset.playerTheme||'';
  document.body.dataset.scholarPreviousTheme=previous;
@@ -961,7 +1093,7 @@ const scholarQuizFacts={
 ],
 'کارل فریدریش گاوس':[
 ['در چه سال‌هایی زندگی کرد؟','۱۷۷۷ تا ۱۸۵۵ میلادی',['۱۷۰۷ تا ۱۷۸۳','۱۸۱۵ تا ۱۸۶۴','۱۸۸۲ تا ۱۹۳۵']],
-['به چه لقبی شهرت داشت؟','شاهزادهٔ ریاضی‌دانان',['پدر رایانه','سلطان هندسه']],
+['به چه لقبی شهرت داشت؟','شاهزادهٔ ریاضی‌دانان',['پدر رایانه','سلطان هندسه','پدر پزشکی']],
 ['دستاوردهایش کدام حوزه‌ها را دربرمی‌گیرد؟','نظریهٔ اعداد، آمار، هندسه و نجوم',['فقط پزشکی','فقط برنامه‌نویسی','فقط موسیقی']],
 ['اهل کدام کشور بود؟','آلمان',['فرانسه','ایران','یونان']],
 ['در چه علمی اثرگذار بود؟','آمار',['زیست‌شناسی دریایی','ادبیات','معماری']]
@@ -1045,76 +1177,136 @@ const scholarQuizFacts={
 ]
 };
 window.startScholarQuiz=function(name=currentScholarName){
- // نام دانشمند از متغیر داخلی همین بخش گرفته می‌شود؛ لازم نیست از onclick سراسری خوانده شود.
- name=name||currentScholarName;
- const scholar=scholars.find(x=>x[0]===name);if(!scholar){notify('ابتدا یک دانشمند را از دانشنامه انتخاب کن.');return;}
- currentScholarName=name;
- const facts=scholarQuizFacts[name]||[];
- if(facts.length<5){notify('آزمون این دانشمند هنوز آماده نیست.');return;}
- const questions=[];
- facts.forEach((f,i)=>{
-  const distractors=f[2].slice(0,3);
-  const opts=shuffleArray([f[1],...distractors]);
-  questions.push({q:f[0],a:f[1],opts});
-  questions.push({q:'بر اساس زندگی‌نامه، کدام گزینه درست است؟ '+f[0],a:f[1],opts:shuffleArray([f[1],...distractors])});
- });
- scholarQuizState={name,questions:questions.slice(0,10),index:0,correct:0,total:10};
- show('scholarQuiz');renderScholarQuizQuestion();
+ try{
+  name=name||currentScholarName;
+  const scholar=scholars.find(x=>x[0]===name);
+  if(!scholar){notify('ابتدا یک دانشمند را از دانشنامه انتخاب کن.');return;}
+  currentScholarName=name;
+  const facts=scholarQuizFacts[name]||[];
+  if(facts.length!==5){notify('آزمون این دانشمند هنوز کامل نیست.');return;}
+  const questions=facts.map((f,i)=>{
+   if(!Array.isArray(f)||typeof f[0]!=='string'||typeof f[1]!=='string'||!Array.isArray(f[2])||f[2].length<3){
+    throw new Error('ساختار سؤال شمارهٔ '+(i+1)+' ناقص است');
+   }
+   const opts=[f[1],...f[2].slice(0,3)];
+   if(new Set(opts).size!==4)throw new Error('گزینه‌های سؤال شمارهٔ '+(i+1)+' تکراری هستند');
+   for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+   return {q:f[0],a:f[1],opts};
+  });
+  scholarQuizState={name,questions,index:0,correct:0,total:5,waitingNext:false};
+  const panel=$('scholarQuiz');
+  if(!panel)throw new Error('پنل آزمون پیدا نشد');
+  scholarQuizState.waitingNext=false;
+  show('scholarQuiz');
+  panel.classList.remove('hidden');
+  renderScholarQuizQuestion();
+ }catch(err){
+  console.error('Scholar quiz start error:',err);
+  notify('آزمون باز نشد. لطفاً دوباره وارد زندگی‌نامهٔ دانشمند شو.');
+ }
 };
 function renderScholarQuizQuestion(){
  const st=scholarQuizState;if(!st)return;
  $('scholarQuizTitle').textContent='آزمون زندگی‌نامه: '+st.name;
- $('scholarQuizProgress').textContent=`سؤال ${st.index+1} از ${st.total||10} | پاسخ درست: ${st.correct}`;
- const q=st.questions[st.index];$('scholarQuizQuestion').textContent=q.q;
+ $('scholarQuizProgress').textContent=`سؤال ${st.index+1} از ${st.total} | پاسخ درست: ${st.correct}`;
+ const q=st.questions[st.index];
+ $('scholarQuizQuestion').textContent=q.q;
  const opts=$('scholarQuizOptions');opts.innerHTML='';
+ const oldFeedback=document.getElementById('scholarQuizFeedback');if(oldFeedback)oldFeedback.remove();
+ const oldNext=document.getElementById('scholarQuizNext');if(oldNext)oldNext.remove();
  q.opts.forEach(opt=>{
-  const b=document.createElement('button');b.className='card';b.type='button';b.textContent=opt;
+  const b=document.createElement('button');b.className='card scholar-answer-option';b.type='button';b.textContent=opt;
   b.onclick=()=>{
-   if(b.disabled)return;
-   opts.querySelectorAll('button').forEach(x=>x.disabled=true);
-   if(opt===q.a)st.correct++;
-   st.index++;
-   if(st.index>=10)finishScholarQuiz();else renderScholarQuizQuestion();
+   if(st.waitingNext)return;
+   st.waitingNext=true;
+   opts.querySelectorAll('button').forEach(x=>{x.disabled=true;if(x.textContent===q.a)x.classList.add('scholar-answer-correct');});
+   const correct=opt===q.a;
+   if(correct){st.correct++;b.classList.add('scholar-answer-correct');}
+   else b.classList.add('scholar-answer-wrong');
+   const feedback=document.createElement('div');feedback.id='scholarQuizFeedback';
+   feedback.className='scholar-quiz-feedback '+(correct?'correct':'wrong');
+   feedback.textContent=correct?'✅ آفرین! پاسخ درست است.':'❌ پاسخ درست: '+q.a;
+   opts.parentElement.appendChild(feedback);
+   $('scholarQuizProgress').textContent=`سؤال ${st.index+1} از ${st.total} | پاسخ درست: ${st.correct}`;
+   const next=document.createElement('button');next.id='scholarQuizNext';next.className='gold scholar-quiz-next';next.type='button';
+   next.textContent=st.index===st.total-1?'دیدن نتیجهٔ آزمون':'سؤال بعدی ←';
+   next.onclick=()=>{
+    st.index++;
+    if(st.index>=st.total)finishScholarQuiz();
+    else{st.waitingNext=false;renderScholarQuizQuestion();}
+   };
+   opts.parentElement.appendChild(next);
   };
   opts.appendChild(b);
  });
 }
-
+function revealScholarFifaCard(name){
+ const old=document.getElementById('scholarCardReveal');if(old)old.remove();
+ renderScholarCollection();
+ const owned=[...document.querySelectorAll('#scholarCardCollectionGrid .scholar-fifa-card')];
+ const scholarIndex=scholars.findIndex(x=>x[0]===name);
+ const source=owned.find(el=>el.getAttribute('aria-label')==='کارت کلکسیونی '+name);
+ const layer=document.createElement('div');layer.id='scholarCardReveal';layer.className='scholar-card-reveal';
+ const shade=document.createElement('div');shade.className='scholar-card-reveal-shade';
+ const stage=document.createElement('div');stage.className='scholar-card-reveal-stage';
+ const back=document.createElement('div');back.className='scholar-card-reveal-back';back.innerHTML='<span>MR. MATH</span><b>★</b><small>LEGENDARY SCHOLAR</small>';
+ const front=document.createElement('div');front.className='scholar-card-reveal-front';
+ if(source){front.appendChild(source.cloneNode(true));}
+ else{front.textContent=name;}
+ stage.append(back,front);layer.append(shade,stage);
+ const title=document.createElement('div');title.className='scholar-card-reveal-title';title.textContent='🎉 تبریک! کارت دانشمند آزاد شد';
+ layer.appendChild(title);
+ layer.addEventListener('click',()=>layer.remove());
+ document.body.appendChild(layer);
+ requestAnimationFrame(()=>layer.classList.add('show'));
+ setTimeout(()=>{if(layer.isConnected)layer.classList.add('flipped');},450);
+ setTimeout(()=>{if(layer.isConnected)title.classList.add('visible');},1250);
+}
 function finishScholarQuiz(){
  const st=scholarQuizState;if(!st)return;
  show('study');$('scholarDetail').classList.remove('hidden');$('scholars').classList.add('hidden');$('searchScholar').classList.add('hidden');
  $('scholarDetailTitle').textContent=st.name+' — نتیجهٔ آزمون';
  $('scholarDetailBody').innerHTML='';
- const p=document.createElement('h3');p.textContent=`نتیجه: ${st.correct} از ۱۰`; $('scholarDetailBody').appendChild(p);
- if(st.correct>=7){
+ const p=document.createElement('h3');p.textContent=`نتیجه: ${st.correct} از ۵`; $('scholarDetailBody').appendChild(p);
+ if(st.correct>=4){
   data.ownedScholarCards=data.ownedScholarCards||[];
   const first=!data.ownedScholarCards.includes(st.name);
   if(first){data.ownedScholarCards.push(st.name);data.coins=(Number(data.coins)||0)+500;}
   save();update();renderScholarCollection();
   showConfetti(7000);
   notifyScholarCard(st.name);
+  revealScholarFifaCard(st.name);
   const msg=document.createElement('p');msg.textContent=first?'🎉 شما موفق شدید کارت کلکسیونی '+st.name+' را دریافت کنید! ۵۰۰ سکه هم جایزه گرفتی.':'این کارت را قبلاً جمع‌آوری کرده‌ای؛ کارت تکراری سکه ندارد.';
   $('scholarDetailBody').appendChild(msg);
- }else{const p2=document.createElement('p');p2.textContent='برای دریافت کارت، باید دست‌کم ۷ پاسخ درست داشته باشی. دوباره تلاش کن!';$('scholarDetailBody').appendChild(p2);}
+ }else{const p2=document.createElement('p');p2.textContent='برای دریافت کارت کلکسیونی باید دست‌کم ۴ پاسخ درست از ۵ سؤال داشته باشی. دوباره تلاش کن!';$('scholarDetailBody').appendChild(p2);}
  const retry=document.createElement('button');retry.textContent='آزمون دوباره';retry.onclick=()=>startScholarQuiz(st.name);$('scholarDetailBody').appendChild(retry);
  const back=document.createElement('button');back.className='secondary';back.textContent='بازگشت به زندگی‌نامه';back.onclick=()=>openScholar(st.name);$('scholarDetailBody').appendChild(back);
  scholarQuizState=null;
 }
 function renderScholarCollection(){
  const grid=$('scholarCardCollectionGrid');if(!grid)return;grid.innerHTML='';
- const cards=data.ownedScholarCards||[];$('scholarCardCount').textContent=cards.length+' کارت';
- if(!cards.length){const p=document.createElement('p');p.className='muted';p.textContent='با گرفتن حداقل ۷ از ۱۰ در آزمون زندگی‌نامه، کارت‌ها را جمع‌آوری کن.';grid.appendChild(p);return;}
+ const cards=data.ownedScholarCards||[];const count=$('scholarCardCount');if(count)count.textContent=cards.length+' کارت';
+ if(!cards.length){const p=document.createElement('p');p.className='muted';p.textContent='اگر از ۵ سؤال زندگی‌نامه، دست‌کم ۴ سؤال را درست پاسخ بدهی، کارت کلکسیونی آن دانشمند را می‌گیری.';grid.appendChild(p);return;}
  cards.forEach(name=>{
-  const card=document.createElement('div');card.className='collectible-card';
-  const scholarIndex=scholars.findIndex(x=>x[0]===name);
-  const number=scholarIndex>=0?scholarIndex+1:'؟';
-  const emoji=document.createElement('div');emoji.className='card-emoji';emoji.textContent='🎓';
-  const serial=document.createElement('b');serial.textContent='دانشمند شمارهٔ '+number;
-  const n=document.createElement('b');n.textContent=name;
-  const tag=document.createElement('small');tag.textContent='کارت کلکسیونی • دریافت‌شده';
-  card.append(emoji,serial,n,tag);grid.appendChild(card);
+  const scholarIndex=scholars.findIndex(x=>x[0]===name);const number=scholarIndex>=0?scholarIndex+1:'؟';
+  const card=document.createElement('article');card.className='scholar-fifa-card';card.setAttribute('aria-label','کارت کلکسیونی '+name);
+  const top=document.createElement('div');top.className='scholar-fifa-top';
+  const rating=document.createElement('span');rating.className='scholar-fifa-rating';rating.textContent='۹۹';
+  const position=document.createElement('span');position.className='scholar-fifa-position';position.textContent='LEGEND';top.append(rating,position);
+  const portrait=document.createElement('img');portrait.className='scholar-fifa-portrait';portrait.alt='تصویر '+name;portrait.loading='lazy';
+  const fallback=document.createElement('div');fallback.className='scholar-fifa-fallback';fallback.textContent=name;
+  const imageUrl=scholarPortraits[name]||'';
+  if(imageUrl){portrait.src=imageUrl;portrait.onerror=()=>{portrait.style.display='none';fallback.style.display='flex';};}
+  else{portrait.style.display='none';fallback.style.display='flex';}
+  const title=document.createElement('div');title.className='scholar-fifa-name';title.textContent=name;
+  const serial=document.createElement('div');serial.className='scholar-fifa-number';serial.textContent='دانشمند شمارهٔ '+String(number).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+  const stats=document.createElement('div');stats.className='scholar-fifa-stats';
+  [['شوت','۹۹'],['حمله','۹۹'],['دریبل','۹۹']].forEach(([label,value])=>{const item=document.createElement('div');item.className='scholar-fifa-stat';const v=document.createElement('b');v.textContent=value;const l=document.createElement('small');l.textContent=label;item.append(v,l);stats.appendChild(item);});
+  const earned=document.createElement('div');earned.className='scholar-fifa-earned';earned.textContent='✦ کارت کلکسیونی دریافت‌شده ✦';
+  card.append(top,portrait,fallback,title,serial,stats,earned);grid.appendChild(card);
  });
 }
+window.renderScholarCollection=renderScholarCollection;
 function notifyScholarCard(name){
  const old=document.getElementById('scholarCardToast');if(old)old.remove();
  const toast=document.createElement('div');toast.id='scholarCardToast';toast.style.cssText='position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:10000;background:linear-gradient(120deg,#8b5cf6,#db2777);color:white;padding:16px 24px;border-radius:16px;box-shadow:0 8px 30px #0008;text-align:center;font-weight:bold';
@@ -1206,6 +1398,7 @@ window.openMiniGame=function(type){
  const box=$('miniGameArea');box.classList.remove('hidden');box.innerHTML='';
  const titles={treasure:'🧰 صندوق گنج مخفی',boss:'👹 غول مرحلهٔ آخر',trophy:'🏆 جام قهرمانی',penalty:'⚽ پنالتی ریاضی',legend:'💎 جایزهٔ افسانه‌ای'};
  const title=document.createElement('h3');title.textContent=titles[type];box.appendChild(title);
+ let chestStage=null;if(type==='treasure'){chestStage=document.createElement('div');chestStage.className='treasure-chest-stage';chestStage.innerHTML='<div class="treasure-chest">🧰</div><div class="treasure-prize-pop">🪙✨</div>';box.appendChild(chestStage);}
  if(type==='trophy'){
   const p=document.createElement('p');p.textContent='🏅 مدال برنز: ۵ پاسخ درست | 🥈 مدال نقره: ۱۵ پاسخ درست | 🥇 مدال طلا: ۳۰ پاسخ درست | 💎 مدال الماس: ۵۰ پاسخ درست';box.appendChild(p);
   const q=document.createElement('p');q.textContent='پاسخ‌های درست ثبت‌شده: '+(data.totalCorrect||0);box.appendChild(q);return;
@@ -1220,7 +1413,7 @@ window.openMiniGame=function(type){
   if(count>= (type==='legend'?10:type==='treasure'?10:type==='boss'?5:5)){
    recordCompletedGame(count,score);
    if(type==='legend'&&score>=10&&!data.legendaryClaimed){data.legendaryClaimed=true;data.coins=(data.coins||0)+1000;status.textContent='💎 جایزهٔ افسانه‌ای! ۱۰۰۰ سکه گرفتی!';}
-   else if(type==='treasure'&&score>=8){data.coins=(data.coins||0)+300;status.textContent='🎉 صندوق باز شد! ۳۰۰ سکه گرفتی!';}
+   else if(type==='treasure'&&score>=8){data.coins=(data.coins||0)+300;status.textContent='🎉 صندوق باز شد! ۳۰۰ سکه گرفتی!';if(chestStage)chestStage.classList.add('opening');showRewardCelebration('گنج پیدا شد!', 'صندوق باز شد و ۳۰۰ سکه جایزه گرفتی!','🧰',300);}
    else if(type==='boss'&&score>=4){data.coins=(data.coins||0)+250;status.textContent='👑 غول شکست خورد! ۲۵۰ سکه گرفتی!';}
    else status.textContent='مرحله تمام شد! امتیاز: '+score;
    update();return;
@@ -1302,13 +1495,13 @@ const DAILY_GIFT_COOLDOWN=24*60*60*1000;
 const SHOP_WHEEL_COOLDOWN=24*60*60*1000;
 let shopWheelBusy=false;
 function formatWait(ms){const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);return h+' ساعت و '+m+' دقیقه';}
-window.claimDailyGift=function(){const now=Date.now(),next=Number(data.nextDailyGiftAt)||0,status=$('dailyGiftStatus');if(now<next){status.textContent='هدیه بعدی تا '+formatWait(next-now)+' دیگر آماده می‌شود.';return;}const unowned=themes.filter(t=>t[0]!=='classic'&&!(data.owned||[]).includes(t[0]));if(unowned.length&&Math.random()<0.04){const item=unowned[Math.floor(Math.random()*unowned.length)];data.owned.push(item[0]);status.textContent='🌟 فوق‌العاده! تم کمیاب «'+item[1]+'» را رایگان گرفتی!';}else{const amounts=[40,60,80,120,180,250],weights=[28,25,20,15,9,3];let r=Math.random()*100,idx=0;for(;idx<weights.length-1;idx++){r-=weights[idx];if(r<0)break;}const amount=amounts[idx];data.coins=(Number(data.coins)||0)+amount;status.textContent='🎉 '+amount+' سکه هدیه گرفتی!';}data.nextDailyGiftAt=now+DAILY_GIFT_COOLDOWN;save();update();refreshDailyGift();};
+window.claimDailyGift=function(){const now=Date.now(),next=Number(data.nextDailyGiftAt)||0,status=$('dailyGiftStatus');if(now<next){status.textContent='هدیه بعدی تا '+formatWait(next-now)+' دیگر آماده می‌شود.';return;}const unowned=themes.filter(t=>t[0]!=='classic'&&!(data.owned||[]).includes(t[0]));if(unowned.length&&Math.random()<0.04){const item=unowned[Math.floor(Math.random()*unowned.length)];data.owned.push(item[0]);status.textContent='🌟 فوق‌العاده! تم کمیاب «'+item[1]+'» را رایگان گرفتی!';}else{const amounts=[40,60,80,120,180,250],weights=[28,25,20,15,9,3];let r=Math.random()*100,idx=0;for(;idx<weights.length-1;idx++){r-=weights[idx];if(r<0)break;}const amount=amounts[idx];data.coins=(Number(data.coins)||0)+amount;status.textContent='🎉 '+amount+' سکه هدیه گرفتی!';}data.nextDailyGiftAt=now+DAILY_GIFT_COOLDOWN;save();update();refreshDailyGift();showRewardCelebration('هدیهٔ روزانه‌ات رسید!',status.textContent,'🎁',0);};
 function refreshDailyGift(){const btn=$('dailyGiftBtn');if(!btn)return;const left=Math.max(0,(Number(data.nextDailyGiftAt)||0)-Date.now());btn.disabled=left>0;btn.textContent=left>0?'هدیه بعدی: '+formatWait(left):'باز کردن جعبه شانس 🎁';}
 const shopWheelCoins=[25,50,75,100,150,250];
 function shopWheelCatalog(){return [...playerItems.map(x=>({kind:'player',id:x.id,label:x.emoji+' '+x.name,icon:x.emoji})),...cursorItems.map(x=>({kind:'cursor',id:x.id,label:'💎 '+x.name,icon:'💎'})),...shopWheelCoins.map(n=>({kind:'coins',amount:n,label:'🪙 '+n+' سکه',icon:'🪙'})),...themes.filter(t=>t[0]!=='classic').map(t=>({kind:'background',id:t[0],label:t[4]+' '+t[1],icon:t[4]}))];}
 function renderShopWheel(){const wheel=$('shopPrizeWheel');if(!wheel)return;const items=shopWheelCatalog(),n=items.length,colors=['#ffcf70','#72d6e7','#b69aff','#ff8eae','#7ee0a1','#78a8ff'];wheel.innerHTML='';wheel.style.background='conic-gradient('+items.map((it,i)=>`${colors[i%colors.length]} ${i*360/n}deg ${(i+1)*360/n}deg`).join(',')+')';items.forEach((it,i)=>{const label=document.createElement('span');label.className='shop-wheel-label';const a=i*360/n+180/n;label.textContent=it.icon;label.style.transform=`translate(-50%,-50%) rotate(${a}deg) translateY(-132px) rotate(${-a}deg)`;wheel.appendChild(label);});refreshShopWheel();}
 function refreshShopWheel(){const btn=$('shopWheelSpinBtn');if(!btn)return;const left=Math.max(0,(Number(data.nextShopSpinAt)||0)-Date.now());$('shopWheelBalance').textContent=formatDigits(data.coins||0);btn.disabled=shopWheelBusy||left>0;btn.textContent=shopWheelBusy?'در حال چرخش...':left>0?'فرصت بعدی: '+formatWait(left):'🎡 چرخاندن گردونه فروشگاه';if(left>0)$('shopWheelStatus').textContent='تا چرخش بعدی: '+formatWait(left);else if(!shopWheelBusy)$('shopWheelStatus').textContent='آماده‌ای؟ هر ۲۴ ساعت یک بار!';}
-window.spinShopWheel=function(){if(shopWheelBusy)return;const now=Date.now();if(now<(Number(data.nextShopSpinAt)||0)){refreshShopWheel();return;}const wheel=$('shopPrizeWheel'),out=$('shopWheelPrize'),items=shopWheelCatalog();const backgroundHit=Math.random()<0.01;let prize;if(backgroundHit){const available=themes.filter(t=>t[0]!=='classic'&&!(data.owned||[]).includes(t[0]));if(available.length){const t=available[Math.floor(Math.random()*available.length)];prize={kind:'background',id:t[0],label:t[1],icon:t[4]};}else{prize={kind:'coins',amount:250,label:'250 سکه',icon:'🪙'};}}else{const normal=items.filter(x=>x.kind!=='background');prize=normal[Math.floor(Math.random()*normal.length)];}let idx=items.findIndex(x=>x.kind===prize.kind&&(x.id===prize.id||x.amount===prize.amount));if(idx<0)idx=0;shopWheelBusy=true;out.classList.add('hidden');refreshShopWheel();const n=items.length,angle=360/n,current=Number(wheel.dataset.rotation||0),target=current+360*7+(360-(idx*angle+angle/2));wheel.style.transform='rotate('+target+'deg)';wheel.dataset.rotation=String(target);data.nextShopSpinAt=now+SHOP_WHEEL_COOLDOWN;save();window.setTimeout(()=>{let message='';if(prize.kind==='coins'){data.coins=(Number(data.coins)||0)+prize.amount;message='🎉 برنده شدی: '+prize.amount+' سکه!';}else if(prize.kind==='background'){if(!(data.owned||[]).includes(prize.id)){data.owned.push(prize.id);message='🌌 شگفت‌انگیز! پس‌زمینه کمیاب «'+prize.label+'» را بردی!';}else{data.coins+=150;message='این تم را داشتی؛ به‌جایش ۱۵۰ سکه گرفتی!';}}else if(prize.kind==='player'){data.ownedPlayers=data.ownedPlayers||[];if(!data.ownedPlayers.includes(prize.id)){data.ownedPlayers.push(prize.id);message='⭐ شخصیت فروشگاه را برنده شدی!';}else{data.coins+=100;message='این آیتم را داشتی؛ به‌جایش ۱۰۰ سکه گرفتی!';}}else if(prize.kind==='cursor'){data.ownedCursors=data.ownedCursors||[];if(!data.ownedCursors.includes(prize.id)){data.ownedCursors.push(prize.id);message='💎 نشانگر ویژه را برنده شدی!';}else{data.coins+=75;message='این آیتم را داشتی؛ به‌جایش ۷۵ سکه گرفتی!';}}shopWheelBusy=false;update();renderShop();out.textContent=message;out.classList.remove('hidden');refreshShopWheel();},5350);};
+window.spinShopWheel=function(){if(shopWheelBusy)return;const now=Date.now();if(now<(Number(data.nextShopSpinAt)||0)){refreshShopWheel();return;}const wheel=$('shopPrizeWheel'),out=$('shopWheelPrize'),items=shopWheelCatalog();const backgroundHit=Math.random()<0.01;let prize;if(backgroundHit){const available=themes.filter(t=>t[0]!=='classic'&&!(data.owned||[]).includes(t[0]));if(available.length){const t=available[Math.floor(Math.random()*available.length)];prize={kind:'background',id:t[0],label:t[1],icon:t[4]};}else{prize={kind:'coins',amount:250,label:'250 سکه',icon:'🪙'};}}else{const normal=items.filter(x=>x.kind!=='background');prize=normal[Math.floor(Math.random()*normal.length)];}let idx=items.findIndex(x=>x.kind===prize.kind&&(x.id===prize.id||x.amount===prize.amount));if(idx<0)idx=0;shopWheelBusy=true;out.classList.add('hidden');refreshShopWheel();const n=items.length,angle=360/n,current=Number(wheel.dataset.rotation||0),target=current+360*7+(360-(idx*angle+angle/2));wheel.style.transform='rotate('+target+'deg)';wheel.dataset.rotation=String(target);data.nextShopSpinAt=now+SHOP_WHEEL_COOLDOWN;save();window.setTimeout(()=>{let message='';if(prize.kind==='coins'){data.coins=(Number(data.coins)||0)+prize.amount;message='🎉 برنده شدی: '+prize.amount+' سکه!';}else if(prize.kind==='background'){if(!(data.owned||[]).includes(prize.id)){data.owned.push(prize.id);message='🌌 شگفت‌انگیز! پس‌زمینه کمیاب «'+prize.label+'» را بردی!';}else{data.coins+=150;message='این تم را داشتی؛ به‌جایش ۱۵۰ سکه گرفتی!';}}else if(prize.kind==='player'){data.ownedPlayers=data.ownedPlayers||[];if(!data.ownedPlayers.includes(prize.id)){data.ownedPlayers.push(prize.id);message='⭐ شخصیت فروشگاه را برنده شدی!';}else{data.coins+=100;message='این آیتم را داشتی؛ به‌جایش ۱۰۰ سکه گرفتی!';}}else if(prize.kind==='cursor'){data.ownedCursors=data.ownedCursors||[];if(!data.ownedCursors.includes(prize.id)){data.ownedCursors.push(prize.id);message='💎 نشانگر ویژه را برنده شدی!';}else{data.coins+=75;message='این آیتم را داشتی؛ به‌جایش ۷۵ سکه گرفتی!';}}shopWheelBusy=false;update();renderShop();out.textContent=message;out.classList.remove('hidden');refreshShopWheel();showRewardCelebration('تبریک! گردونه جایزه داد',message,prize.icon||'🎁',prize.kind==='coins'?prize.amount:0);},5350);};
 
 const coinPrizes=[10,20,30,50,75,100,150,250];
 const coinWeights=[24,20,17,14,10,7,5,3];
@@ -1396,11 +1589,26 @@ window.showEffects=function(){show('effects');$('effectsToggle').checked=data.sp
 window.setEffectsEnabled=function(v){data.specialEffects=!!v;save();};
 window.previewGameEffect=function(){if(data.specialEffects===false){$('effectPreview').textContent=({fa:'افکت‌ها خاموش هستند.',en:'Effects are turned off.',ar:'المؤثرات متوقفة.',zh:'特效已关闭。'})[currentLang()];return;}celebrate();$('effectPreview').textContent='🎉 ✨ '+({fa:'آفرین! عالی پیش می‌روی!',en:'Great job! Keep it up!',ar:'أحسنت! واصل التقدم!',zh:'做得好！继续加油！'})[currentLang()]+' ✨ 🎉';};
 
+window.mrMathUpdate=update;
 window.showSettings=function(){show('settings');$('settingName').value=data.name;$('settingLang').value=data.lang;$('soundToggle').checked=data.sound;$('musicToggle').checked=!!data.music;if($('effectsToggle'))$('effectsToggle').checked=data.specialEffects!==false;};
 window.saveSettings=function(){data.name=$('settingName').value.trim()||'بازیکن';data.lang=$('settingLang').value;data.sound=$('soundToggle').checked;data.music=$('musicToggle').checked;data.specialEffects=$('effectsToggle')?$('effectsToggle').checked:data.specialEffects;toggleMusic(data.music);window.mrMathData=data;mrApplyLanguage();update();$('hello').textContent='سلام '+data.name+'! آماده‌ای؟';alert('تنظیمات ذخیره شد.');};
 window.resetGame=function(){if(confirm('همه سکه‌ها و خریدها پاک شوند؟')){data={name:data.name,coins:0,lang:data.lang,sound:true,music:false,owned:['classic'],theme:'classic',ownedPlayers:[],ownedCursors:[],playerTheme:'',cursor:'',totalGames:0,totalCorrect:0,totalIncorrect:0,answeredQuestions:0,correctQuestions:0,easyCorrect:0,mediumCorrect:0,hardCorrect:0,claimedChallenges:[],completedChallenges:[],studiedScholars:[],onboardingDone:true,age:data.age||'',trophyCorrectQuestions:0,earnedTrophies:[],ownedDecorations:[],specialEffects:true,effectStyle:'sparkle',currentStreak:0,bestStreak:0,speedBest:0,speedAttempts:0,nextDailyGiftAt:0,nextShopSpinAt:0};toggleMusic(false);update();show('home');}};
 window.mrMathData=data;bgMusic.enabled=!!data.music;if(bgMusic.enabled)toggleMusic(true);mrApplyLanguage();if(data.name&&data.onboardingDone){$('playerName').value=data.name;$('playerAge').value=data.age||'';$('lang').value=data.lang;show('home');$('hello').textContent='سلام '+data.name+'! آماده‌ای؟';}else{show('welcome');welcomeNext(1);$('lang').value=data.lang||'fa';}update();
 window.teacherMathScholars=scholars;renderScholarCollection();
+const giftBtn=$('redeemSpecialGift');
+if(giftBtn)giftBtn.addEventListener('click',()=>{
+ const input=$('specialGiftCode'),status=$('specialGiftStatus');
+ const code=(input?.value||'').trim().toLowerCase();
+ if(code!=='ali'){if(status)status.textContent='کد واردشده معتبر نیست.';return;}
+ data.usedSpecialGiftCodes=data.usedSpecialGiftCodes||[];
+ if(data.usedSpecialGiftCodes.includes('ali')){if(status)status.textContent='این کد قبلاً استفاده شده است.';return;}
+ data.usedSpecialGiftCodes.push('ali');
+ data.coins=(Number(data.coins)||0)+99999;
+ save();update();
+ if(status)status.textContent='🎉 کد پذیرفته شد! ۹۹٬۹۹۹ سکه به حسابت اضافه شد.';
+ if(input)input.value='';
+ showRewardCelebration('جایزهٔ ویژه!', '۹۹٬۹۹۹ سکه دریافت کردی!','🪙',99999);
+});
 })();
 </script>
 
@@ -1471,24 +1679,6 @@ window.teacherMathScholars=scholars;renderScholarCollection();
 /* Persian 100-question multiple-choice duel upgrade */
 (()=>{
  const $=id=>document.getElementById(id),fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
- const oldRender=window.renderScholarCollection;
- window.finishScholarQuiz=function(){
-  const st=scholarQuizState;if(!st)return;
-  show('study');$('scholarDetail').classList.remove('hidden');$('scholars').classList.add('hidden');$('searchScholar').classList.add('hidden');
-  $('scholarDetailTitle').textContent=st.name+' — نتیجهٔ آزمون';$('scholarDetailBody').innerHTML='';
-  const h=document.createElement('h3');h.textContent=`نتیجه: ${st.correct} از ۱۰`;$('scholarDetailBody').appendChild(h);
-  if(st.correct>=7){
-   data.ownedScholarCards=data.ownedScholarCards||[];const first=!data.ownedScholarCards.includes(st.name);
-   if(first)data.ownedScholarCards.push(st.name);data.coins=(data.coins||0)+500;save();update();
-   if(typeof window.renderScholarCollection==='function')window.renderScholarCollection();
-   if(typeof showConfetti==='function')showConfetti(2500);
-   const i=Math.max(0,scholars.findIndex(x=>x[0]===st.name))+1;
-   const msg=document.createElement('p');msg.textContent=`🎉 دانشمند شماره ${fa(i)} انجام شد! ۵۰۰ سکه جایزه گرفتی و کارت کلکسیونی ${st.name} در پروفایلت ثبت شد.`;$('scholarDetailBody').appendChild(msg);
-  }else{const msg=document.createElement('p');msg.textContent='برای دریافت کارت و ۵۰۰ سکه باید دست‌کم ۷ پاسخ درست داشته باشی. دوباره تلاش کن!';$('scholarDetailBody').appendChild(msg);}
-  const retry=document.createElement('button');retry.textContent='آزمون دوباره';retry.onclick=()=>startScholarQuiz(st.name);$('scholarDetailBody').appendChild(retry);
-  const back=document.createElement('button');back.className='secondary';back.textContent='بازگشت به زندگی‌نامه';back.onclick=()=>openScholar(st.name);$('scholarDetailBody').appendChild(back);scholarQuizState=null;
- };
- window.renderScholarCollection=function(){if(typeof oldRender==='function')oldRender();const cards=data.ownedScholarCards||[];document.querySelectorAll('#scholarCardCollectionGrid .collectible-card').forEach((el,i)=>{const small=el.querySelector('small');if(small)small.textContent=`دانشمند شماره ${fa(Math.max(1,scholars.findIndex(x=>x[0]===cards[i])+1))} انجام شد • کارت کلکسیونی`;});};
  let st=null,timer=null;
  function makeQuestions(level){
   const hard=level==='hard',count=100,out=[];
@@ -1580,6 +1770,32 @@ window.teacherMathScholars=scholars;renderScholarCollection();
  window.startDuel=init;window.finishDuel=()=>confirmFinish();window.stopDuel=cancel;
  const style=document.createElement('style');style.textContent='.mc-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:20px 0}.mc-option{background:#26395f;color:#fff;border:2px solid #536b9d;text-align:center;font-size:20px;min-height:58px}.mc-option.selected{border-color:#ffd166;background:#635129}.mc-nav{justify-content:space-between;margin-top:18px}.mc-nav button{flex:0 1 auto}.duel-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.football-stars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.football-star{display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid #7188c5;border-radius:16px;padding:12px;background:#142343;font-size:30px}.football-star b{font-size:16px;color:#ffd166}.football-star small{font-size:12px;color:#b7c3df}.mc-nav button:disabled{opacity:.45;cursor:not-allowed}@media(max-width:560px){.football-stars{grid-template-columns:repeat(2,1fr)}}';document.head.appendChild(style);
  const cancelBtn=document.createElement('button');cancelBtn.type='button';cancelBtn.id='duelCancelBtn';cancelBtn.className='secondary';cancelBtn.textContent='لغو دوئل';cancelBtn.onclick=cancel;const arena=$('duelArena');if(arena)arena.appendChild(cancelBtn);
+})();
+</script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);const d=()=>window.mrMathData||{};const save=()=>{if(window.mrMathSave)window.mrMathSave();if(window.mrMathUpdate)window.mrMathUpdate();};
+const show=id=>{if(window.show)window.show(id);else{document.querySelectorAll('.panel').forEach(x=>x.classList.add('hidden'));$(id).classList.remove('hidden');}};
+const level=()=>Math.max(1,Math.floor((Number(d().correctQuestions||d().totalCorrect||0))/10)+1);
+function refreshLevel(){const e=$('playerLevelPill');if(e)e.textContent='⭐ سطح '+level();}
+const oldUpdate=window.mrMathUpdate; if(oldUpdate)window.mrMathUpdate=function(){oldUpdate();refreshLevel();};
+window.showEndlessMode=()=>{show('endlessMode');$('endlessQuestion').textContent='برای شروع دکمه را بزن.';$('endlessAnswers').innerHTML='';$('endlessFeedback').textContent='';$('endlessStart').classList.remove('hidden');$('endlessStop').classList.add('hidden');};
+let endless={score:0,streak:0,active:false,answer:null};
+function arithmetic(){let a=Math.floor(Math.random()*16)+2,b=Math.floor(Math.random()*12)+1,op=['+','−','×'][Math.floor(Math.random()*3)],v=op==='+'?a+b:op==='−'?a-b:a*b;let opts=new Set([v]);while(opts.size<4)opts.add(v+Math.floor(Math.random()*13)-6);return {q:`${a} ${op} ${b} = ؟`,a:String(v),opts:[...opts].sort(()=>Math.random()-.5).map(String)};}
+function endlessQuestion(){let q=arithmetic();endless.answer=q.a;$('endlessQuestion').textContent=q.q;$('endlessAnswers').innerHTML='';q.opts.forEach(v=>{let b=document.createElement('button');b.textContent=v;b.onclick=()=>{if(!endless.active)return;if(v===q.a){endless.score++;endless.streak++;d().coins=(Number(d().coins)||0)+5;d().correctQuestions=(Number(d().correctQuestions)||0)+1;d().totalCorrect=(Number(d().totalCorrect)||0)+1;$('endlessFeedback').textContent='✅ درست است! ۵ سکه گرفتی.';$('endlessFeedback').className='feedback good';}else{endless.active=false;endless.streak=0;$('endlessFeedback').textContent='پایان مرحله! پاسخ درست '+q.a+' بود. امتیاز: '+endless.score;$('endlessFeedback').className='feedback bad';$('endlessStart').classList.remove('hidden');$('endlessStop').classList.add('hidden');} $('endlessScore').textContent='پاسخ درست: '+endless.score;$('endlessStreak').textContent='پیاپی: '+endless.streak;save();refreshLevel();if(endless.active)setTimeout(endlessQuestion,650);};$('endlessAnswers').appendChild(b);});}
+window.startEndless=()=>{endless={score:0,streak:0,active:true,answer:null};$('endlessStart').classList.add('hidden');$('endlessStop').classList.remove('hidden');$('endlessFeedback').textContent='';endlessQuestion();};window.stopEndless=()=>{endless.active=false;$('endlessStart').classList.remove('hidden');$('endlessStop').classList.add('hidden');$('endlessFeedback').textContent='مرحله متوقف شد. امتیاز: '+endless.score;};
+let cup={stage:0,index:0,correct:0,active:false,q:null};
+window.showGoldCup=()=>{show('goldCup');$('cupQuestion').textContent='برای آغاز رقابت آماده‌ای؟';$('cupAnswers').innerHTML='';$('cupFeedback').textContent='';$('cupStart').classList.remove('hidden');cup.active=false;};
+function cupNext(){if(cup.index>=15){cup.active=false;$('cupQuestion').textContent='🏆 قهرمانی تمام شد! پاسخ درست: '+cup.correct+' از ۱۵';$('cupAnswers').innerHTML='';$('cupFeedback').textContent=cup.correct>=12?'عالی! جام طلایی را به دست آوردی.':'تمرین خوبی بود؛ برای جام طلایی باید ۱۲ پاسخ درست داشته باشی.';if(cup.correct>=12){d().goldCupWon=true;d().coins=(Number(d().coins)||0)+100;$('cupFeedback').textContent+=' ۱۰۰ سکه جایزه گرفتی.';}save();$('cupStart').textContent='شروع دوباره';$('cupStart').classList.remove('hidden');return;}cup.stage=Math.floor(cup.index/5)+1;$('cupStageLabel').textContent='مرحله '+cup.stage+' از ۳';$('cupProgressFill').style.width=(cup.index/15*100)+'%';cup.q=arithmetic();$('cupQuestion').textContent=cup.q.q;$('cupAnswers').innerHTML='';cup.q.opts.forEach(v=>{let b=document.createElement('button');b.textContent=v;b.onclick=()=>{if(!cup.active)return;cup.active=false;if(v===cup.q.a){cup.correct++;d().coins=(Number(d().coins)||0)+5;$('cupFeedback').textContent='درست! +۵ سکه';$('cupFeedback').className='feedback good';}else{$('cupFeedback').textContent='پاسخ درست: '+cup.q.a;$('cupFeedback').className='feedback bad';}d().correctQuestions=(Number(d().correctQuestions)||0)+(v===cup.q.a?1:0);cup.index++;save();refreshLevel();setTimeout(()=>{cup.active=true;cupNext();},650);};$('cupAnswers').appendChild(b);});}
+window.startGoldCup=()=>{cup={stage:1,index:0,correct:0,active:true,q:null};$('cupStart').classList.add('hidden');$('cupFeedback').textContent='';cupNext();};
+window.showMathLab=()=>show('mathLab');window.calcRectangle=()=>{let a=Number($('labLength').value),b=Number($('labWidth').value);$('labRectangleResult').textContent=Number.isFinite(a*b)&&a>=0&&b>=0?'مساحت: '+(a*b):'عدد معتبر وارد کن.';};window.calcCircle=()=>{let r=Number($('labRadius').value);$('labCircleResult').textContent=r>=0?'مساحت تقریبی: '+(Math.PI*r*r).toFixed(2):'شعاع معتبر وارد کن.';};window.calcLab=()=>{let a=Number($('labA').value),b=Number($('labB').value),o=$('labOp').value;let v=o==='+'?a+b:o==='-'?a-b:o==='*'?a*b:b===0?'تقسیم بر صفر ممکن نیست':a/b;$('labCalcResult').textContent='نتیجه: '+v;};
+let football={score:0,q:null};const fqs=[()=>{let v=Math.floor(Math.random()*8)+3;return {q:`اگر یک بازیکن ${v} گل در ۲ مسابقه بزند و در مسابقه سوم ۲ گل دیگر بزند، مجموع گل‌ها چند است؟`,a:String(v+2),opts:[v+1,v+2,v+3,v+4].map(String)};},()=>{let v=Math.floor(Math.random()*6)+2;return {q:`یک شوت با سرعت ${v*10} کیلومتر بر ساعت، در ۲ ثانیه چند واحد سرعتِ فرضی دارد؟`,a:String(v*20),opts:[v*10,v*20,v*30,v*40].map(String)};},()=>({q:'زاویه یک دور کامل زمین فوتبال چند درجه است؟',a:'۳۶۰',opts:['۹۰','۱۸۰','۲۷۰','۳۶۰']}),()=>({q:'اگر تیمی ۳ برد و هر برد ۳ امتیاز داشته باشد، چند امتیاز می‌گیرد؟',a:'۹',opts:['۶','۸','۹','۱۲']}),()=>({q:'اگر توپ از نقطه پنالتی تا دروازه ۱۱ متر فاصله داشته باشد، دو برابر آن چند متر است؟',a:'۲۲',opts:['۱۱','۱۶','۲۲','۳۳']})];
+window.showFootballMath=()=>{show('footballMath');football.score=0;$('footballScore').textContent='امتیاز: ۰';$('footballQuestion').textContent='برای شروع تمرین فوتبال ریاضی آماده‌ای؟';$('footballAnswers').innerHTML='';$('footballFeedback').textContent='';$('footballStart').textContent='شروع تمرین';};window.nextFootballQuestion=()=>{let q=fqs[Math.floor(Math.random()*fqs.length)]();football.q=q;$('footballQuestion').textContent=q.q;$('footballAnswers').innerHTML='';$('footballStart').textContent='سؤال بعدی';q.opts.sort(()=>Math.random()-.5).forEach(v=>{let b=document.createElement('button');b.textContent=v;b.onclick=()=>{if(b.disabled)return;[...$('footballAnswers').children].forEach(x=>x.disabled=true);if(v===q.a){football.score++;d().coins=(Number(d().coins)||0)+5;d().correctQuestions=(Number(d().correctQuestions)||0)+1;$('footballFeedback').textContent='⚽ گل شد! +۵ سکه';$('footballFeedback').className='feedback good';}else{$('footballFeedback').textContent='این بار گل نشد؛ پاسخ درست: '+q.a;$('footballFeedback').className='feedback bad';} $('footballScore').textContent='امتیاز: '+football.score;save();refreshLevel();};$('footballAnswers').appendChild(b);});$('footballFeedback').textContent='';};
+window.showScientistMap=()=>show('scientistMap');window.mapScholar=(name,place,work)=>{$('mapScholarInfo').innerHTML='<h3>'+name+'</h3><p>زادگاه/خاستگاه: '+place+'</p><p>زمینه فعالیت: '+work+'</p><button type="button" onclick="openScholarFromMap(\''+name.replace(/'/g,"\\'")+'\')">مشاهده زندگی‌نامه</button>';};window.openScholarFromMap=name=>{if(window.openScholar)window.openScholar(name);else if(window.teacherMathScholars){show('study');}};
+window.setFeatureSound=v=>{d().featureSound=!!v;save();};window.setMusicVolume=v=>{let n=Math.max(0,Math.min(100,Number(v)||0))/100;if(window.bgMusic&&window.bgMusic.audio)window.bgMusic.audio.volume=n;d().musicVolume=n;save();};
+const init=()=>{refreshLevel();let vol=Number(d().musicVolume??35);if($('musicVolume'))$('musicVolume').value=vol;if(window.bgMusic&&window.bgMusic.audio)window.bgMusic.audio.volume=vol/100;if($('featureSoundToggle'))$('featureSoundToggle').checked=d().featureSound!==false;};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 </body>
