@@ -1407,164 +1407,63 @@ window.teacherMathScholars=scholars;renderScholarCollection();
 <div id="accountModal" class="hidden" style="position:fixed;inset:0;background:#050816dd;z-index:9999;display:none;align-items:center;justify-content:center;padding:16px">
  <div style="background:#172442;border:1px solid #64748b;border-radius:18px;padding:20px;width:min(440px,100%);color:white;max-height:90vh;overflow:auto">
   <h2 style="margin-top:0">👤 حساب کاربری Teacher Math</h2>
-  <p id="accountStatus" role="status" aria-live="polite">برای ذخیرهٔ پیشرفت روی حساب خودت وارد شو یا ثبت‌نام کن.</p>
-  <label for="accNick">نام نمایشی</label><input id="accNick" maxlength="24" autocomplete="nickname" placeholder="نام یا لقب" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
-  <label for="accEmail">ایمیل</label><input id="accEmail" type="email" autocomplete="email" placeholder="name@example.com" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
-  <label for="accPass">رمز عبور</label><input id="accPass" type="password" autocomplete="current-password" placeholder="حداقل ۸ نویسه" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
-  <div id="newPasswordWrap" class="hidden"><label for="accNewPass">رمز عبور جدید</label><input id="accNewPass" type="password" autocomplete="new-password" placeholder="رمز جدید، حداقل ۸ نویسه" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px"><button onclick="accountSetNewPassword()" class="gold">ثبت رمز جدید</button></div>
-  <label>تصویر پروفایل (اختیاری)</label><input id="accAvatar" type="file" accept="image/png,image/jpeg,image/webp" style="width:100%;margin:8px 0 14px">
-  <div style="display:flex;gap:8px;flex-wrap:wrap">
-   <button onclick="accountAction('register')">ثبت‌نام</button><button onclick="accountAction('login')">ورود</button>
-   <button class="secondary" onclick="accountResetPassword()">بازیابی رمز</button><button onclick="uploadMyAvatar()" class="secondary">بارگذاری تصویر</button>
-   <button class="secondary" onclick="accountLogout()">خروج از حساب</button><button class="secondary" onclick="closeAccount()">بستن</button>
+  <p id="accountStatus" role="status" aria-live="polite">یکی از گزینه‌های ورود یا ثبت‌نام را انتخاب کن.</p>
+  <div id="accountChoice" style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="showAccountStep('register')">ثبت‌نام</button><button onclick="showAccountStep('login')">ورود</button></div>
+  <div id="registerFields" class="hidden">
+   <label for="accNick">نام مستعار</label><input id="accNick" maxlength="24" autocomplete="nickname" placeholder="نامی که در بازی دیده می‌شود" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <label for="accEmail">جیمیل</label><input id="accEmail" type="email" autocomplete="email" placeholder="name@gmail.com" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <button onclick="sendAccountCode()">بعدی؛ ارسال کد تأیید</button>
   </div>
-  <small style="display:block;margin-top:12px;color:#cbd5e1;line-height:1.8">پس از ثبت‌نام، ایمیلت را تأیید کن. پیشرفت بازی پس از ورود با حساب تو همگام می‌شود.</small>
+  <div id="otpFields" class="hidden">
+   <label for="accOtp">کد پنج‌رقمی ایمیل</label><input id="accOtp" inputmode="numeric" maxlength="5" autocomplete="one-time-code" placeholder="کد ارسال‌شده" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <button onclick="verifyAccountCode()">تأیید کد و ادامه</button>
+  </div>
+  <div id="passwordFields" class="hidden">
+   <label for="accNewPass">رمز عبور قوی (حداقل ۸ نویسه)</label><input id="accNewPass" type="password" autocomplete="new-password" placeholder="رمز عبور جدید" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <button onclick="finishAccountRegistration()">ساخت حساب</button>
+  </div>
+  <div id="loginFields" class="hidden">
+   <label for="loginEmail">جیمیل</label><input id="loginEmail" type="email" autocomplete="email" placeholder="name@gmail.com" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <label for="loginNick">نام مستعار</label><input id="loginNick" maxlength="24" autocomplete="nickname" placeholder="نام مستعار حساب" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <label for="loginPass">رمز عبور</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="رمز عبور" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:8px">
+   <button onclick="loginTeacherMath()">ورود به حساب</button>
+  </div>
+  <div id="profileFields" class="hidden"><p id="profileInfo"></p><button onclick="accountLogout()" class="secondary">خروج از حساب</button></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="secondary" onclick="closeAccount()">بستن</button><button id="accountBack" class="secondary hidden" onclick="resetAccountSteps()">بازگشت</button></div>
+  <small style="display:block;margin-top:12px;color:#cbd5e1;line-height:1.8">رمز عبور محرمانه است و به‌صورت متن قابل مشاهده ذخیره نمی‌شود. ورود خودکار پس از اولین ورود فعال می‌ماند.</small>
  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
  'use strict';
- const modal=document.getElementById('accountModal');
- const statusEl=document.getElementById('accountStatus');
- const $=id=>document.getElementById(id);
- // Bind the account button directly, so the modal opens even if inline handlers are unavailable.
- const accountOpenButton=$('accountOpenButton');
- if(accountOpenButton) accountOpenButton.addEventListener('click',()=>{
-  modal.classList.remove('hidden');
-  modal.style.display='flex';
-  if(typeof window.openAccount==='function') window.openAccount();
- });
+ const modal=document.getElementById('accountModal'), statusEl=document.getElementById('accountStatus'), $=id=>document.getElementById(id);
+ const accountOpenButton=document.getElementById('accountOpenButton');if(accountOpenButton)accountOpenButton.addEventListener('click',()=>window.openAccount());
  const SUPABASE_URL='https://cjmxnlydgubbhhomvglx.supabase.co';
- // Paste the project's Publishable key (sb_publishable_...) from Supabase here.
  const SUPABASE_PUBLISHABLE_KEY='sb_publishable_ckLddtMeye_IF5y667uf_A_IimkmLb-';
- let client=null, saveTimer=null, syncing=false, recoveryMode=false;
+ let client=null,saveTimer=null,syncing=false,verifiedEmail='',pendingNickname='';
  const msg=t=>{statusEl.textContent=t;};
- function ready(){
-  if(client)return true;
-  if(!window.supabase||!window.supabase.createClient){msg('کتابخانه Supabase بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را تازه‌سازی کن.');return false;}
-  if(!SUPABASE_PUBLISHABLE_KEY||SUPABASE_PUBLISHABLE_KEY.includes('PASTE_')){msg('کلید Publishable پروژه هنوز در کد قرار نگرفته است.');return false;}
-  client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-  return true;
- }
- function getGameData(){return window.mrMathData||{};}
- function applyCloudData(cloud){
-  if(!cloud||typeof cloud!=='object')return;
-  const target=getGameData();
-  Object.keys(target).forEach(k=>delete target[k]);
-  Object.assign(target,cloud);
-  window.mrMathData=target;
-  if(typeof window.update==='function')window.update();
-  if(typeof window.mrApplyLanguage==='function')window.mrApplyLanguage();
- }
- async function saveCloudNow(){
-  if(!client)return;
-  const {data:{user}}=await client.auth.getUser();
-  if(!user)return;
-  const gameData=JSON.parse(JSON.stringify(getGameData()));
-  const nickname=(gameData.name||$('accNick').value||'بازیکن').slice(0,24);
-  const {error}=await client.from('teacher_math_saves').upsert({user_id:user.id,nickname,game_data:gameData,updated_at:new Date().toISOString()},{onConflict:'user_id'});
-  if(error)throw error;
- }
- async function loadCloud(user){
-  if(!client||!user)return;
-  syncing=true;
-  try{
-   const {data:row,error}=await client.from('teacher_math_saves').select('game_data,nickname,updated_at').eq('user_id',user.id).maybeSingle();
-   if(error)throw error;
-   if(row&&row.game_data&&typeof row.game_data==='object'){
-    applyCloudData(row.game_data);
-    if(row.nickname)$('accNick').value=row.nickname;
-    msg('وارد شدی؛ پیشرفت ذخیره‌شدهٔ حسابت بارگذاری شد.');
-   }else{
-    if($('accNick').value.trim())getGameData().name=$('accNick').value.trim();
-    await saveCloudNow();
-    msg('حساب متصل شد؛ پیشرفت فعلی بازی در فضای آنلاین ذخیره شد.');
-   }
-  }catch(e){msg('ورود انجام شد، اما بارگذاری اطلاعات ناموفق بود: '+(e.message||'خطای ناشناخته'));}
-  finally{syncing=false;}
- }
- window.openAccount=function(){modal.classList.remove('hidden');modal.style.display='flex';try{if(ready())refreshAccountStatus().catch(e=>msg('وضعیت حساب بررسی نشد: '+(e.message||'خطای ارتباط')));}catch(e){msg('پنجره حساب باز شد، اما اتصال آماده نیست: '+(e.message||'خطای ناشناخته'));}};
+ function ready(){if(client)return true;if(!window.supabase||!window.supabase.createClient){msg('اتصال اینترنت یا بارگذاری سرویس حساب مشکل دارد. صفحه را تازه‌سازی کن.');return false;}client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});return true;}
+ function hideSteps(){['accountChoice','registerFields','otpFields','passwordFields','loginFields','profileFields'].forEach(id=>$(id).classList.add('hidden'));}
+ window.showAccountStep=function(step){hideSteps();$('accountBack').classList.remove('hidden');if(step==='register')$('registerFields').classList.remove('hidden');else $('loginFields').classList.remove('hidden');msg(step==='register'?'نام مستعار و جیمیل را وارد کن.':'اطلاعات حساب قبلی را وارد کن.');};
+ window.resetAccountSteps=function(){hideSteps();$('accountChoice').classList.remove('hidden');$('accountBack').classList.add('hidden');msg('یکی از گزینه‌های ورود یا ثبت‌نام را انتخاب کن.');};
+ window.openAccount=async function(){modal.classList.remove('hidden');modal.style.display='flex';if(!ready())return;const {data:{session}}=await client.auth.getSession();if(session){showProfile(session.user);}else resetAccountSteps();};
  window.closeAccount=function(){modal.style.display='none';};
- async function refreshAccountStatus(){
-  if(!ready())return;
-  const {data:{session}}=await client.auth.getSession();
-  if(session){$('accEmail').value=session.user.email||'';msg('حساب متصل است: '+(session.user.email||''));}
-  else msg('برای ذخیرهٔ پیشرفت روی حساب خودت وارد شو یا ثبت‌نام کن.');
- }
- window.accountAction=async function(action){
-  if(!ready())return;
-  const email=$('accEmail').value.trim(),password=$('accPass').value,nickname=$('accNick').value.trim();
-  if(!email){msg('لطفاً ایمیل را وارد کن.');return;}
-  if(!password||password.length<8){msg('رمز عبور باید حداقل ۸ نویسه داشته باشد.');return;}
-  try{
-   msg(action==='register'?'در حال ایجاد حساب...':'در حال ورود...');
-   if(action==='register'){
-    const {data,error}=await client.auth.signUp({email,password,options:{data:{nickname},emailRedirectTo:location.origin+location.pathname}});
-    if(error)throw error;
-    if(data.session){if(nickname)getGameData().name=nickname;msg('ثبت‌نام و ورود انجام شد؛ اطلاعات حسابت در حال همگام‌سازی است.');}
-    else msg('ثبت‌نام انجام شد. ایمیلت را باز کن و لینک تأیید را بزن؛ سپس به بازی برگرد و وارد شو.');
-   }else{
-    const {data,error}=await client.auth.signInWithPassword({email,password});
-    if(error)throw error;
-    if(nickname)getGameData().name=nickname;
-    msg('ورود موفق بود؛ اطلاعات حسابت در حال همگام‌سازی است.');
-   }
-  }catch(e){msg('خطا: '+(e.message||'عملیات انجام نشد.'));}
- };
- window.accountResetPassword=async function(){
-  if(!ready())return;
-  const email=$('accEmail').value.trim();if(!email){msg('ابتدا ایمیلت را وارد کن.');return;}
-  try{const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;msg('اگر این ایمیل در سیستم ثبت شده باشد، لینک بازیابی رمز برایش ارسال می‌شود. ایمیلت را بررسی کن.');}
-  catch(e){msg('ارسال لینک بازیابی ناموفق بود: '+e.message);}
- };
- window.accountSetNewPassword=async function(){
-  if(!ready())return;
-  const password=$('accNewPass').value;if(password.length<8){msg('رمز جدید باید حداقل ۸ نویسه داشته باشد.');return;}
-  try{const {error}=await client.auth.updateUser({password});if(error)throw error;recoveryMode=false;$('newPasswordWrap').classList.add('hidden');$('accNewPass').value='';msg('رمز عبور با موفقیت تغییر کرد.');}
-  catch(e){msg('تغییر رمز انجام نشد: '+e.message);}
- };
- window.accountLogout=async function(){
-  if(!ready())return;
-  try{const {error}=await client.auth.signOut();if(error)throw error;msg('از حساب خارج شدی. اطلاعات محلی این دستگاه پاک نمی‌شود.');}
-  catch(e){msg('خروج ناموفق بود: '+e.message);}
- };
- window.uploadMyAvatar=async function(){
-  if(!ready())return;
-  const file=$('accAvatar').files[0];if(!file){msg('اول یک تصویر انتخاب کن.');return;}
-  if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>2*1024*1024){msg('فقط تصویر PNG، JPG یا WebP تا حجم ۲ مگابایت مجاز است.');return;}
-  try{
-   const {data:{user}}=await client.auth.getUser();if(!user){msg('برای بارگذاری تصویر ابتدا وارد حساب شو.');return;}
-   const ext=file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
-   const path=user.id+'/'+Date.now()+'.'+ext;
-   const {error}=await client.storage.from('teacher-math-avatars').upload(path,file,{upsert:true,contentType:file.type});if(error)throw error;
-   const {data:pub}=client.storage.from('teacher-math-avatars').getPublicUrl(path);
-   const {error:metaError}=await client.auth.updateUser({data:{avatar_url:pub.publicUrl}});if(metaError)throw metaError;
-   msg('تصویر پروفایل بارگذاری شد.');
-  }catch(e){msg('بارگذاری تصویر ناموفق بود: '+e.message);}
- };
- window.scheduleCloudSave=function(){
-  if(!client)return;
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(()=>saveCloudNow().catch(e=>msg('ذخیرهٔ آنلاین ناموفق بود: '+(e.message||'خطای ارتباط'))),1100);
- };
- const oldUpdate=window.update;
- if(typeof oldUpdate==='function')window.update=function(){oldUpdate();window.scheduleCloudSave();};
- if(ready()){
-  client.auth.onAuthStateChange((event,session)=>{
-   if(event==='PASSWORD_RECOVERY'){
-    recoveryMode=true;$('newPasswordWrap').classList.remove('hidden');
-    modal.style.display='flex';modal.classList.remove('hidden');msg('لینک معتبر است؛ رمز عبور جدیدت را وارد کن.');
-   }else if(event==='SIGNED_IN'&&session){
-    $('accEmail').value=session.user.email||'';
-    if(modal.style.display==='flex')msg('ورود موفق بود؛ در حال همگام‌سازی اطلاعات...');
-    Promise.resolve().then(()=>loadCloud(session.user));
-   }else if(event==='SIGNED_OUT'){
-    msg('از حساب خارج شدی. پیشرفت محلی بازی همچنان روی این دستگاه باقی است.');
-   }
-  });
-  client.auth.getSession().then(({data:{session}})=>{if(session)loadCloud(session.user);});
- }
+ function showProfile(user){hideSteps();$('accountBack').classList.add('hidden');$('profileFields').classList.remove('hidden');const nick=user.user_metadata?.nickname||'بازیکن';$('profileInfo').textContent='نام مستعار: '+nick+' | جیمیل: '+(user.email||'');const b=$('accountOpenButton');if(b)b.textContent=user.email||nick;}
+ window.sendAccountCode=async function(){if(!ready())return;const email=$('accEmail').value.trim().toLowerCase(),nick=$('accNick').value.trim();if(!nick){msg('لطفاً نام مستعار انتخاب کن.');return;}if(!/^[^\s@]+@gmail\.com$/i.test(email)){msg('لطفاً یک نشانی جیمیل معتبر وارد کن.');return;}try{pendingNickname=nick;msg('در حال ارسال کد تأیید...');const {error}=await client.auth.signInWithOtp({email,options:{shouldCreateUser:true,data:{nickname:nick}}});if(error)throw error;$('registerFields').classList.add('hidden');$('otpFields').classList.remove('hidden');msg('کد تأیید به جیمیل فرستاده شد. صندوق ورودی و هرزنامه را بررسی کن.');}catch(e){msg('ارسال کد ناموفق بود: '+e.message);}};
+ window.verifyAccountCode=async function(){if(!ready())return;const email=$('accEmail').value.trim().toLowerCase(),token=$('accOtp').value.trim();if(!/^\d{5}$/.test(token)){msg('کد باید دقیقاً پنج رقم باشد.');return;}try{msg('در حال بررسی کد...');const {data,error}=await client.auth.verifyOtp({email,token,type:'email'});if(error)throw error;verifiedEmail=email;if(data.user){await client.auth.updateUser({data:{nickname:pendingNickname}});}$('otpFields').classList.add('hidden');$('passwordFields').classList.remove('hidden');msg('ایمیل تأیید شد. حالا رمز عبورت را انتخاب کن.');}catch(e){msg('کد تأیید نشد: '+e.message);}};
+ window.finishAccountRegistration=async function(){if(!ready())return;const pass=$('accNewPass').value;if(pass.length<8){msg('رمز عبور باید حداقل ۸ نویسه داشته باشد.');return;}try{const {error}=await client.auth.updateUser({password:pass,data:{nickname:pendingNickname}});if(error)throw error;getGameData().name=pendingNickname;await saveCloudNow();showProfile((await client.auth.getUser()).data.user);msg('حساب ساخته شد و پیشرفت بازی ذخیره شد. دفعه بعد خودکار وارد می‌شوی.');}catch(e){msg('ساخت رمز یا ذخیره حساب ناموفق بود: '+e.message);}};
+ window.loginTeacherMath=async function(){if(!ready())return;const email=$('loginEmail').value.trim().toLowerCase(),nick=$('loginNick').value.trim(),password=$('loginPass').value;if(!email||!nick||!password){msg('جیمیل، نام مستعار و رمز را کامل وارد کن.');return;}try{msg('در حال ورود...');const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;const saved=data.user.user_metadata?.nickname||'';if(saved&&saved!==nick){await client.auth.signOut();throw new Error('نام مستعار با این حساب مطابقت ندارد.');}await loadCloud(data.user);showProfile(data.user);}catch(e){msg('ورود انجام نشد: '+e.message);}};
+ function getGameData(){return window.mrMathData||{};}
+ function applyCloudData(cloud){if(!cloud||typeof cloud!=='object')return;const target=getGameData();Object.keys(target).forEach(k=>delete target[k]);Object.assign(target,cloud);window.mrMathData=target;if(typeof window.update==='function')window.update();if(typeof window.mrApplyLanguage==='function')window.mrApplyLanguage();}
+ async function saveCloudNow(){if(!client)return;const {data:{user}}=await client.auth.getUser();if(!user)return;const gameData=JSON.parse(JSON.stringify(getGameData()));const nickname=(user.user_metadata?.nickname||gameData.name||'بازیکن').slice(0,24);const {error}=await client.from('teacher_math_saves').upsert({user_id:user.id,nickname,game_data:gameData,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;}
+ async function loadCloud(user){if(!client||!user)return;syncing=true;try{const {data:row,error}=await client.from('teacher_math_saves').select('game_data,nickname,updated_at').eq('user_id',user.id).maybeSingle();if(error)throw error;if(row&&row.game_data&&typeof row.game_data==='object'){applyCloudData(row.game_data);if(row.nickname)getGameData().name=row.nickname;msg('پیشرفت ذخیره‌شدهٔ حسابت بارگذاری شد.');}else{getGameData().name=user.user_metadata?.nickname||getGameData().name||'بازیکن';await saveCloudNow();msg('حساب متصل شد و پیشرفت فعلی ذخیره شد.');}}catch(e){msg('ورود انجام شد، اما همگام‌سازی ناموفق بود: '+e.message);}finally{syncing=false;}}
+ window.accountLogout=async function(){if(!ready())return;try{const {error}=await client.auth.signOut();if(error)throw error;const b=$('accountOpenButton');if(b)b.textContent='👤 حساب کاربری';resetAccountSteps();msg('از حساب خارج شدی.');}catch(e){msg('خروج ناموفق بود: '+e.message);}};
+ window.accountResetPassword=async function(){if(!ready())return;const email=$('loginEmail').value.trim();if(!email){msg('ابتدا جیمیل را وارد کن.');return;}try{const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;msg('لینک بازیابی رمز به ایمیلت ارسال شد.');}catch(e){msg('ارسال لینک بازیابی ناموفق بود: '+e.message);}};
+ window.uploadMyAvatar=async function(){msg('بارگذاری تصویر پروفایل در این نسخه موقتاً در دسترس نیست.');};
+ window.scheduleCloudSave=function(){if(!client||syncing)return;clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveCloudNow().catch(e=>msg('ذخیره آنلاین ناموفق بود: '+e.message)),1200);};
+ const oldUpdate=window.update;if(typeof oldUpdate==='function')window.update=function(){oldUpdate();window.scheduleCloudSave();};
+ if(ready()){client.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'&&session){const b=$('accountOpenButton');if(b)b.textContent=session.user.email||'حساب من';Promise.resolve().then(()=>loadCloud(session.user));}else if(event==='SIGNED_OUT'){const b=$('accountOpenButton');if(b)b.textContent='👤 حساب کاربری';}});client.auth.getSession().then(({data:{session}})=>{if(session){const b=$('accountOpenButton');if(b)b.textContent=session.user.email||'حساب من';loadCloud(session.user);}});}
 })();
 </script>
 
